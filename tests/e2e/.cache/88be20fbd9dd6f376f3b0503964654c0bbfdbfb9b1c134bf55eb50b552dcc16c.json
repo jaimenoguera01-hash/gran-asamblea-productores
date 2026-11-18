@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "trace-1",
+  "createdAt": "2026-11-17T21:45:13.223Z",
+  "payload": {
+    "actions": [
+      {
+        "name": "tap",
+        "summary": "tap button \"Guardar\"",
+        "target": {
+          "role": "button",
+          "name": "Guardar"
+        }
+      }
+    ],
+    "executor": {
+      "name": "e2e-default-agent",
+      "version": "2"
+    },
+    "recordedFor": {
+      "testId": "validacion-campos.e2e.ts::validacion-campos",
+      "targetId": "web",
+      "instructionDigest": "78e3885e185d9c0091249b28575264671d82eea59fc129ba1f467c4f91f29b96",
+      "paramsDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "callIndex": 0,
+      "agent": "default"
+    },
+    "recordedBy": {
+      "provider": "caffeine-inference.chat",
+      "model": "deepseek-v4.1-flash"
+    },
+    "summary": "Pressed \"Guardar\" on the empty registration form. The app blocked the save and showed validation alerts for every field: \"Ingresa tu nombre y apellido.\", \"Ingresa tu cédula de identidad.\", \"Ingresa tu número de teléfono.\", \"Ingresa tu correo electrónico.\", \"Indica tu municipio.\", \"Indica tu parroqu…",
+    "startPath": "/#registro",
+    "endPath": "/#registro",
+    "endAnchors": [
+      {
+        "role": "alert",
+        "name": "Ingresa tu nombre y apellido."
+      },
+      {
+        "role": "alert",
+        "name": "Ingresa tu cédula de identidad."
+      },
+      {
+        "role": "alert",
+        "name": "Ingresa tu número de teléfono."
+      },
+      {
+        "role": "alert",
+        "name": "Ingresa tu correo electrónico."
+      },
+      {
+        "role": "alert",
+        "name": "Indica tu municipio."
+      },
+      {
+        "role": "alert",
+        "name": "Indica tu parroquia."
+      }
+    ],
+    "endWaitMs": 10986,
+    "keyedBy": {
+      "cacheSchema": "trace-1",
+      "policyVersion": "conservative/6",
+      "project": "403fcccf39e2650a7e389bda5a9246bfe8c725769a98b3a749be67a096c16423",
+      "platform": "web",
+      "engineName": "web",
+      "engineSpiVersion": 1,
+      "appIdentity": "aec5acc8a8d7ba14d388c35095196d67ae7ad7199ff1168a3230addcf190cf8d",
+      "agentContextDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "spec": {
+    "id": "event-location",
+    "kind": "interactive",
+    "goal": "Open the event details and see the updated location",
+    "requirementIndexes": [],
+    "acceptanceCriteriaIndexes": [],
+    "steps": [
+      "Open the event details section"
+    ],
+    "checks": [
+      {
+        "afterStep": 0,
+        "expectText": "Hotel Giardini Salón de Reuniones"
+      },
+      {
+        "afterStep": 0,
+        "expectText": "27 Noviembre 2026 4PM"
+      },
+      {
+        "afterStep": 0,
+        "expectText": "El Arroz en crisis"
+      }
+    ]
+  }
+}

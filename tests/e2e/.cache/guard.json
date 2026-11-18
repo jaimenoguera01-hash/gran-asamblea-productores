@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "flows": {
+    "descarga-excel": {
+      "plan": [
+        "1bc9c674955a59c3",
+        "768466b4628ed1a0",
+        "84a4e0b32de53043"
+      ],
+      "last": "passed"
+    },
+    "event-date-visible": {
+      "plan": [
+        "01b7e1421b914ced",
+        "14e5687a5cf8b095",
+        "56250d9e0a5281cc",
+        "ccd8b6ba2412101e"
+      ],
+      "last": "passed"
+    },
+    "event-location": {
+      "plan": [
+        "79eab626a483100b",
+        "bbac3b356baa2239",
+        "d44fb5699a962856"
+      ],
+      "last": "passed"
+    },
+    "registro-asistencia": {
+      "plan": [
+        "01a183b35c18855d",
+        "0885ba0de15a0d38",
+        "18dfe2f6d342f660",
+        "1970693df10c5688",
+        "2bf913f4d1145ddc",
+        "305bf64da4a8e86c",
+        "32d8cbf0fa909ede",
+        "3c33d8436a3d2a7e",
+        "4a675b69a5ca871d",
+        "72801e4fd5ba186f",
+        "81b256e4096192a8",
+        "9d396ebd527f0d02",
+        "9f46e88d757e235a",
+        "a123b80a3b2a9dc9",
+        "bd2483c7904b18fc",
+        "c0eda6dff7ad3d25",
+        "c58aec6100d5514d",
+        "d2dfb6990461b197",
+        "df1995ca96846c52",
+        "ec0846adb2ca1d94",
+        "ef314d35b7ee166e",
+        "f320f08943c902e7"
+      ],
+      "last": "passed"
+    },
+    "registro-y-recordatorio": {
+      "plan": [
+        "17b2d0e67f2aacbc",
+        "1f5b020c7cfe1e88",
+        "3c2848b6a9cd5771",
+        "439ac43fb67fe2ab",
+        "53b4bccc733f7c38",
+        "72deee3c12eea16c",
+        "76f882241755e18a",
+        "88b3087253555781",
+        "91145321f8a888c1",
+        "b79a440061594cf5",
+        "d3e8c4487d45fc89",
+        "d46ccb3e651fec0c",
+        "dc884f0ddd97ea21",
+        "df32f84e07e895be",
+        "e650791af9612148",
+        "f39a72b92f87193b",
+        "f4542e87032693ee",
+        "fcd73d7d843c782c",
+        "fd39fbfd95fea31e"
+      ],
+      "last": "passed"
+    },
+    "validacion-campos": {
+      "plan": [
+        "0885ba0de15a0d38",
+        "5944f18dacb4544b"
+      ],
+      "last": "passed"
+    }
+  },
+  "order": [
+    "registro-asistencia",
+    "descarga-excel",
+    "validacion-campos",
+    "event-date-visible",
+    "event-location",
+    "registro-y-recordatorio"
+  ]
+}

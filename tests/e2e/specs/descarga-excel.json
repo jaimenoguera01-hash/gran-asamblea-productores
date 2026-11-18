@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "spec": {
+    "id": "descarga-excel",
+    "kind": "interactive",
+    "goal": "Descargar la tabla de Excel con los registros guardados",
+    "requirementIndexes": [],
+    "acceptanceCriteriaIndexes": [],
+    "steps": [
+      "Press Descargar Excel"
+    ],
+    "checks": [
+      {
+        "afterStep": 0,
+        "expectText": "Ana Pérez"
+      }
+    ]
+  }
+}

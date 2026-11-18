@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "spec": {
+    "id": "registro-asistencia",
+    "kind": "interactive",
+    "goal": "Abrir el formulario, registrar una asistencia y ver el aviso verde de registro exitoso",
+    "requirementIndexes": [],
+    "acceptanceCriteriaIndexes": [],
+    "steps": [
+      "Press Registrar asistencia",
+      "Register an attendance for Ana Pérez with cédula V-12345678, phone 0414-1234567, email ana.perez@example.com, municipio Francisco de Miranda, parroquia Calabozo and press Guardar",
+      "Reload the page",
+      "Press Registrar asistencia"
+    ],
+    "checks": [
+      {
+        "afterStep": 0,
+        "expectText": "Nombre y apellido"
+      },
+      {
+        "afterStep": 1,
+        "expectText": "Registro exitoso"
+      },
+      {
+        "afterStep": 2,
+        "expectText": "Gran Asamblea de Productores"
+      },
+      {
+        "afterStep": 3,
+        "expectText": "Nombre y apellido"
+      }
+    ]
+  }
+}

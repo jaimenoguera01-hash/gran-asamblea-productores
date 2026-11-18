@@ -1,0 +1,96 @@
+// Version: 4.0.0
+type AccessControlState__201339279 =
+  {
+    var adminAssigned : Bool;
+    userRoles : Map__175655829<Principal, UserRole__91647283>
+  };
+type AttendanceId__1047620299 = AttendanceId__91187254;
+type AttendanceId__91187254 = Nat;
+type Attendance__753881897 =
+  {
+    cedula : Text;
+    email : Text;
+    fullName : Text;
+    id : AttendanceId__1047620299;
+    municipio : Text;
+    parroquia : Text;
+    phone : Text;
+    registeredAt : Timestamp__591943523
+  };
+type Attendance__93777138 =
+  {
+    cedula : Text;
+    email : Text;
+    fullName : Text;
+    id : Nat;
+    municipio : Text;
+    parroquia : Text;
+    phone : Text;
+    registeredAt : Int
+  };
+type Attendance__999340565 =
+  {
+    cedula : Text;
+    email : Text;
+    fullName : Text;
+    id : Nat;
+    municipio : Text;
+    parroquia : Text;
+    phone : Text;
+    registeredAt : Int
+  };
+type Data__1061330525<K, V> =
+  {var count : Nat__565224867; kvs : [var ?(K, V)]};
+type Internal__1060388275<K, V> =
+  {children : [var ?Node__1010487028<K, V>]; data : Data__1061330525<K, V>};
+type Leaf__8515789<K, V> = {data : Data__1061330525<K, V>};
+type Map__175655829<K, V> = Map__975833162<K, V>;
+type Map__925935234<K, V> =
+  {var root : Node__1010487028<K, V>; var size : Nat__565224867};
+type Map__975833162<K, V> = Map__925935234<K, V>;
+type Nat__565224867 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NewActor__563741893 =
+  {
+    accessControlState : AccessControlState__201339279;
+    attendanceNextId : {var value : Nat};
+    attendanceRecords : Map__175655829<Nat, Attendance__999340565>;
+    reminderSent : {var value : Bool}
+  };
+type NewActor__769816496 =
+  {
+    accessControlState : AccessControlState__201339279;
+    attendanceNextId : {var value : Nat};
+    attendanceRecords : Map__175655829<Nat, Attendance__93777138>
+  };
+type Node__1010487028<K, V> =
+  {#internal : Internal__1060388275<K, V>; #leaf : Leaf__8515789<K, V>};
+type OldActor__325662370 =
+  {
+    accessControlState : AccessControlState__201339279;
+    attendanceNextId : {var value : Nat};
+    attendanceRecords : Map__175655829<Nat, Attendance__999340565>
+  };
+type OldActor__512397517 = {};
+type Timestamp__301639476 = Int;
+type Timestamp__591943523 = Timestamp__301639476;
+type UserRole__91647283 = {#admin; #guest; #user};
+{
+  "00000000_000000" : OldActor__512397517 -> NewActor__769816496;
+  "00000001_000000" : (old : OldActor__325662370) -> NewActor__563741893
+}
+actor  {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__175655829<Principal, UserRole__91647283>
+    };
+  stable attendanceNextId : {var value : AttendanceId__1047620299};
+  stable attendanceRecords :
+    {
+      var root :
+        Node__1010487028<AttendanceId__1047620299, Attendance__753881897>;
+      var size : Nat__565224867
+    };
+  stable reminderSent : {var value : Bool}
+};

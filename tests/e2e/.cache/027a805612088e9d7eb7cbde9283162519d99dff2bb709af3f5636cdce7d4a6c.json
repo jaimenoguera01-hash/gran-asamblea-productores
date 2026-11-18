@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "trace-1",
+  "createdAt": "2026-11-17T22:09:56.314Z",
+  "payload": {
+    "actions": [
+      {
+        "name": "tap",
+        "summary": "tap button \"Enviar recordatorio ahora\"",
+        "target": {
+          "role": "button",
+          "name": "Enviar recordatorio ahora"
+        }
+      },
+      {
+        "name": "tap",
+        "summary": "tap button \"Confirmar envío\"",
+        "target": {
+          "role": "button",
+          "name": "Confirmar envío"
+        }
+      }
+    ],
+    "executor": {
+      "name": "e2e-default-agent",
+      "version": "2"
+    },
+    "recordedFor": {
+      "testId": "registro-y-recordatorio.e2e.ts::registro-y-recordatorio",
+      "targetId": "web",
+      "instructionDigest": "f6e931c62169493ec73ee8de1d94ed8ebb869e4d81b28e25a61aec57c92f011d",
+      "paramsDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "callIndex": 0,
+      "agent": "default"
+    },
+    "recordedBy": {
+      "provider": "caffeine-inference.chat",
+      "model": "deepseek-v4.1-flash"
+    },
+    "summary": "Pulsé \"Enviar recordatorio ahora\" y confirmé con \"Confirmar envío\". El envío se completó: la página muestra \"Se envió el recordatorio a 1 destinatario.\" y el botón vuelve a estar habilitado.",
+    "startPath": "/recordatorio",
+    "endPath": "/recordatorio",
+    "endAnchors": [
+      {
+        "role": "status",
+        "name": "Se envió el recordatorio a 1 destinatario."
+      }
+    ],
+    "endWaitMs": 11544,
+    "keyedBy": {
+      "cacheSchema": "trace-1",
+      "policyVersion": "conservative/6",
+      "project": "403fcccf39e2650a7e389bda5a9246bfe8c725769a98b3a749be67a096c16423",
+      "platform": "web",
+      "engineName": "web",
+      "engineSpiVersion": 1,
+      "appIdentity": "aec5acc8a8d7ba14d388c35095196d67ae7ad7199ff1168a3230addcf190cf8d",
+      "agentContextDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

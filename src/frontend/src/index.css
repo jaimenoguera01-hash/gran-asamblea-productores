@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Fraunces";
+  src: url("/assets/fonts/Fraunces.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Figtree";
+  src: url("/assets/fonts/Figtree.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/assets/fonts/GeistMono.woff2") format("woff2");
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --font-display: "Fraunces", serif;
+    --font-body: "Figtree", sans-serif;
+    --font-mono: "Geist Mono", monospace;
+    --radius: 1rem;
+
+    /* Celeste civic palette — dominant sky blue with warm gold accent */
+    --background: 0.62 0.128 235;
+    --foreground: 0.99 0.008 235;
+
+    --card: 0.55 0.14 237;
+    --card-foreground: 0.99 0.008 235;
+
+    --popover: 0.52 0.145 238;
+    --popover-foreground: 0.99 0.008 235;
+
+    --primary: 0.82 0.155 84;
+    --primary-foreground: 0.24 0.05 70;
+
+    --secondary: 0.68 0.12 233;
+    --secondary-foreground: 0.99 0.008 235;
+
+    --muted: 0.58 0.115 236;
+    --muted-foreground: 0.9 0.02 235;
+
+    --accent: 0.46 0.15 242;
+    --accent-foreground: 0.99 0.008 242;
+
+    --destructive: 0.58 0.2 25;
+    --destructive-foreground: 0.99 0.008 25;
+
+    --success: 0.72 0.18 150;
+    --success-foreground: 0.2 0.05 150;
+
+    --warning: 0.82 0.155 84;
+    --warning-foreground: 0.24 0.05 70;
+
+    --border: 0.72 0.1 234;
+    --input: 0.78 0.09 234;
+    --ring: 0.82 0.155 84;
+
+    --chart-1: 0.82 0.155 84;
+    --chart-2: 0.72 0.18 150;
+    --chart-3: 0.46 0.15 242;
+    --chart-4: 0.68 0.12 233;
+    --chart-5: 0.58 0.2 25;
+
+    --sidebar: 0.55 0.14 237;
+    --sidebar-foreground: 0.99 0.008 235;
+    --sidebar-primary: 0.82 0.155 84;
+    --sidebar-primary-foreground: 0.24 0.05 70;
+    --sidebar-accent: 0.46 0.15 242;
+    --sidebar-accent-foreground: 0.99 0.008 242;
+    --sidebar-border: 0.72 0.1 234;
+    --sidebar-ring: 0.82 0.155 84;
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      oklch(0.84 0.15 88),
+      oklch(0.76 0.16 78)
+    );
+    --gradient-sky: linear-gradient(
+      180deg,
+      oklch(0.66 0.13 232),
+      oklch(0.54 0.14 238)
+    );
+    --gradient-glow: radial-gradient(
+      circle at 50% 0%,
+      oklch(0.78 0.1 232 / 0.55),
+      transparent 70%
+    );
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 0.42 0.12 240;
+    --foreground: 0.99 0.008 240;
+
+    --card: 0.36 0.13 242;
+    --card-foreground: 0.99 0.008 240;
+
+    --popover: 0.34 0.135 243;
+    --popover-foreground: 0.99 0.008 240;
+
+    --primary: 0.82 0.155 84;
+    --primary-foreground: 0.22 0.05 70;
+
+    --secondary: 0.48 0.12 238;
+    --secondary-foreground: 0.99 0.008 240;
+
+    --muted: 0.4 0.11 240;
+    --muted-foreground: 0.88 0.02 240;
+
+    --accent: 0.4 0.14 245;
+    --accent-foreground: 0.99 0.008 245;
+
+    --destructive: 0.62 0.2 25;
+    --destructive-foreground: 0.99 0.008 25;
+
+    --success: 0.74 0.18 150;
+    --success-foreground: 0.18 0.05 150;
+
+    --warning: 0.82 0.155 84;
+    --warning-foreground: 0.22 0.05 70;
+
+    --border: 0.5 0.1 238;
+    --input: 0.52 0.1 238;
+    --ring: 0.82 0.155 84;
+
+    --chart-1: 0.82 0.155 84;
+    --chart-2: 0.74 0.18 150;
+    --chart-3: 0.4 0.14 245;
+    --chart-4: 0.48 0.12 238;
+    --chart-5: 0.62 0.2 25;
+
+    --sidebar: 0.36 0.13 242;
+    --sidebar-foreground: 0.99 0.008 240;
+    --sidebar-primary: 0.82 0.155 84;
+    --sidebar-primary-foreground: 0.22 0.05 70;
+    --sidebar-accent: 0.4 0.14 245;
+    --sidebar-accent-foreground: 0.99 0.008 245;
+    --sidebar-border: 0.5 0.1 238;
+    --sidebar-ring: 0.82 0.155 84;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+    background-image: var(--gradient-sky);
+    background-attachment: fixed;
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  .bg-gradient-primary {
+    background-image: var(--gradient-primary);
+  }
+  .bg-gradient-sky {
+    background-image: var(--gradient-sky);
+  }
+  .bg-gradient-glow {
+    background-image: var(--gradient-glow);
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}

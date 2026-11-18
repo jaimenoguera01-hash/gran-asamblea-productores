@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "spec": {
+    "id": "event-date-visible",
+    "kind": "interactive",
+    "goal": "Open the app and see the event date and time in the event details list",
+    "requirementIndexes": [],
+    "acceptanceCriteriaIndexes": [],
+    "steps": [
+      "Open the event details section"
+    ],
+    "checks": [
+      {
+        "afterStep": 0,
+        "expectText": "27 Noviembre 2026 4PM"
+      },
+      {
+        "afterStep": 0,
+        "expectText": "Fecha"
+      }
+    ]
+  }
+}

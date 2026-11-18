@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "spec": {
+    "id": "registro-y-recordatorio",
+    "kind": "interactive",
+    "goal": "Un productor se registra en la asamblea y el administrador revisa el recordatorio programado y lo envía",
+    "requirementIndexes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "acceptanceCriteriaIndexes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "steps": [
+      "Registrar un productor con nombre Ana Pérez, cédula 12345678, teléfono 04141234567, correo ana@example.com, municipio Calabozo y parroquia Centro",
+      "Abrir la página del recordatorio",
+      "Enviar el recordatorio ahora y confirmar"
+    ],
+    "checks": [
+      {
+        "afterStep": 0,
+        "expectText": "Ana Pérez"
+      },
+      {
+        "afterStep": 1,
+        "expectText": "Recordatorio"
+      },
+      {
+        "afterStep": 1,
+        "expectText": "Venezuela, Guárico y Calabozo cuentan contigo"
+      },
+      {
+        "afterStep": 1,
+        "expectText": "12:00"
+      },
+      {
+        "afterStep": 2,
+        "expectText": "1"
+      }
+    ]
+  }
+}

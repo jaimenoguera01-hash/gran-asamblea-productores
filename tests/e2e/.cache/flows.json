@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "flows": {
+    "descarga-excel": {
+      "flowId": "descarga-excel",
+      "specDigest": "5b1be161461cadd204cd8fe8876abc2c0c13d50928e9907971730fb8ce724a38",
+      "status": "recorded",
+      "recordedAt": "2026-11-17T21:48:43.739Z",
+      "recordedBy": "deepseek-v4.1-flash",
+      "entries": [
+        "f83d2d9028c7824482fb69a7def8b0ad2c188d18f2e756187c9594f41d5c337a.json"
+      ],
+      "ranAfter": [
+        "registro-asistencia"
+      ],
+      "ranWith": [
+        "registro-asistencia"
+      ],
+      "passedTree": "6b50ad1d91f1626071c6988d5a9add2bcd0e6a7a",
+      "visitedPaths": [
+        "/"
+      ],
+      "readOnly": true
+    },
+    "event-date-visible": {
+      "flowId": "event-date-visible",
+      "specDigest": "fcae1dc8a16a32a5c3984c335a2700c0e59772f8392b1cde98a5a7909d2206f8",
+      "status": "recorded",
+      "recordedAt": "2026-11-17T21:56:15.583Z",
+      "recordedBy": "deepseek-v4.1-flash",
+      "entries": [],
+      "noChangeSteps": [
+        0
+      ],
+      "ranAfter": [
+        "descarga-excel",
+        "registro-asistencia",
+        "validacion-campos"
+      ],
+      "ranWith": [
+        "descarga-excel",
+        "registro-asistencia",
+        "validacion-campos"
+      ],
+      "passedTree": "6b50ad1d91f1626071c6988d5a9add2bcd0e6a7a",
+      "visitedPaths": [
+        "/"
+      ],
+      "readOnly": true
+    },
+    "event-location": {
+      "flowId": "event-location",
+      "specDigest": "7092d080d2b471dde9364b09aa5ee3c8d79ce3037a6ec8a7505b291762b47e13",
+      "status": "recorded",
+      "recordedAt": "2026-11-17T21:58:55.749Z",
+      "recordedBy": "deepseek-v4.1-flash",
+      "entries": [],
+      "noChangeSteps": [
+        0
+      ],
+      "ranAfter": [
+        "descarga-excel",
+        "event-date-visible",
+        "registro-asistencia",
+        "validacion-campos"
+      ],
+      "ranWith": [
+        "descarga-excel",
+        "event-date-visible",
+        "registro-asistencia",
+        "validacion-campos"
+      ],
+      "passedTree": "6b50ad1d91f1626071c6988d5a9add2bcd0e6a7a",
+      "visitedPaths": [
+        "/"
+      ],
+      "readOnly": true
+    },
+    "registro-asistencia": {
+      "flowId": "registro-asistencia",
+      "specDigest": "375bb0e2f3ea52338d286f764861f7f9e081ac31e016f7af24bc36f197fabaee",
+      "status": "recorded",
+      "recordedAt": "2026-11-17T21:45:13.283Z",
+      "recordedBy": "deepseek-v4.1-flash",
+      "entries": [
+        "ce79a5e59f02c4568d3769dc6b51f5d5e7a70afca096f51cb2db56a9f4d62df1.json"
+      ],
+      "noChangeSteps": [
+        0,
+        3
+      ],
+      "ranAfter": [],
+      "ranWith": [],
+      "passedTree": "6b50ad1d91f1626071c6988d5a9add2bcd0e6a7a",
+      "visitedPaths": [
+        "/"
+      ]
+    },
+    "registro-y-recordatorio": {
+      "flowId": "registro-y-recordatorio",
+      "specDigest": "4a8494df167f2e285933ea525d3fcac9f0b390a5a4c4b5b1206bf881df20217c",
+      "status": "recorded",
+      "recordedAt": "2026-11-17T22:09:56.380Z",
+      "recordedBy": "deepseek-v4.1-flash",
+      "entries": [
+        "923c1afc9b9c06cf39da8bb32bc83dd2894b9c67dd135364911cc8dea7cde4e6.json",
+        "c9713f28afb3b5f6e0a16433a94499ee34dcf2d7dcdf646acf44d2fb6c3d0932.json",
+        "027a805612088e9d7eb7cbde9283162519d99dff2bb709af3f5636cdce7d4a6c.json"
+      ],
+      "ranAfter": [],
+      "ranWith": []
+    },
+    "validacion-campos": {
+      "flowId": "validacion-campos",
+      "specDigest": "c7f093d009e1955452ef0ec4b7170ef36c72062ba7fcdd09fbc4a2cf7cef42b8",
+      "status": "recorded",
+      "recordedAt": "2026-11-17T21:45:13.291Z",
+      "recordedBy": "deepseek-v4.1-flash",
+      "entries": [
+        "88be20fbd9dd6f376f3b0503964654c0bbfdbfb9b1c134bf55eb50b552dcc16c.json"
+      ],
+      "noChangeSteps": [
+        0
+      ],
+      "ranAfter": [
+        "descarga-excel",
+        "registro-asistencia"
+      ],
+      "ranWith": [
+        "descarga-excel",
+        "registro-asistencia"
+      ],
+      "passedTree": "6b50ad1d91f1626071c6988d5a9add2bcd0e6a7a",
+      "visitedPaths": [
+        "/"
+      ],
+      "readOnly": true
+    }
+  }
+}

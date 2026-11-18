@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "trace-1",
+  "createdAt": "2026-11-17T21:44:55.388Z",
+  "payload": {
+    "actions": [
+      {
+        "name": "type",
+        "summary": "type \"Ana Pérez\" into textbox \"Nombre y apellido\"",
+        "target": {
+          "role": "textbox",
+          "name": "Nombre y apellido",
+          "placeholder": "María Rodríguez"
+        },
+        "value": "Ana Pérez"
+      },
+      {
+        "name": "type",
+        "summary": "type \"V-12345678\" into textbox \"Cédula de identidad\"",
+        "target": {
+          "role": "textbox",
+          "name": "Cédula de identidad",
+          "placeholder": "12345678"
+        },
+        "value": "V-12345678"
+      },
+      {
+        "name": "type",
+        "summary": "type \"0414-1234567\" into textbox \"Teléfono\"",
+        "target": {
+          "role": "textbox",
+          "name": "Teléfono",
+          "placeholder": "04141234567"
+        },
+        "value": "0414-1234567"
+      },
+      {
+        "name": "type",
+        "summary": "type \"ana.perez@example.com\" into textbox \"Email\"",
+        "target": {
+          "role": "textbox",
+          "name": "Email",
+          "placeholder": "correo@ejemplo.com"
+        },
+        "value": "ana.perez@example.com"
+      },
+      {
+        "name": "type",
+        "summary": "type \"Francisco de Miranda\" into textbox \"Municipio\"",
+        "target": {
+          "role": "textbox",
+          "name": "Municipio",
+          "placeholder": "Francisco de Miranda"
+        },
+        "value": "Francisco de Miranda"
+      },
+      {
+        "name": "type",
+        "summary": "type \"Calabozo\" into textbox \"Parroquia\"",
+        "target": {
+          "role": "textbox",
+          "name": "Parroquia",
+          "placeholder": "Calabozo"
+        },
+        "value": "Calabozo"
+      },
+      {
+        "name": "tap",
+        "summary": "tap button \"Guardar\"",
+        "target": {
+          "role": "button",
+          "name": "Guardar"
+        }
+      },
+      {
+        "name": "type",
+        "summary": "type \"12345678\" into textbox \"Cédula de identidad\"",
+        "target": {
+          "role": "textbox",
+          "name": "Cédula de identidad",
+          "placeholder": "12345678"
+        },
+        "value": "12345678"
+      },
+      {
+        "name": "type",
+        "summary": "type \"04141234567\" into textbox \"Teléfono\"",
+        "target": {
+          "role": "textbox",
+          "name": "Teléfono",
+          "placeholder": "04141234567"
+        },
+        "value": "04141234567"
+      },
+      {
+        "name": "tap",
+        "summary": "tap button \"Guardar\"",
+        "target": {
+          "role": "button",
+          "name": "Guardar"
+        }
+      }
+    ],
+    "executor": {
+      "name": "e2e-default-agent",
+      "version": "2"
+    },
+    "recordedFor": {
+      "testId": "registro-asistencia.e2e.ts::registro-asistencia",
+      "targetId": "web",
+      "instructionDigest": "dff8061f9b55f272acefd4bf76897a6d7b30795da233b677dd89d6acc457e336",
+      "paramsDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "callIndex": 0,
+      "agent": "default"
+    },
+    "recordedBy": {
+      "provider": "caffeine-inference.chat",
+      "model": "deepseek-v4.1-flash"
+    },
+    "summary": "Filled the registration form (Ana Pérez, cédula 12345678, teléfono 04141234567, ana.perez@example.com, Municipio Francisco de Miranda, Parroquia Calabozo) and pressed Guardar. The app saved the record: status \"Registro exitoso\" is shown, the form cleared, and \"Descargar Excel\" is now enabled.",
+    "startPath": "/#registro",
+    "endPath": "/#registro",
+    "endAnchors": [
+      {
+        "role": "status",
+        "name": "Registro exitoso"
+      }
+    ],
+    "endWaitMs": 11279,
+    "keyedBy": {
+      "cacheSchema": "trace-1",
+      "policyVersion": "conservative/6",
+      "project": "403fcccf39e2650a7e389bda5a9246bfe8c725769a98b3a749be67a096c16423",
+      "platform": "web",
+      "engineName": "web",
+      "engineSpiVersion": 1,
+      "appIdentity": "aec5acc8a8d7ba14d388c35095196d67ae7ad7199ff1168a3230addcf190cf8d",
+      "agentContextDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "spec": {
+    "id": "validacion-campos",
+    "kind": "interactive",
+    "goal": "Comprobar que el formulario rechaza un registro incompleto",
+    "requirementIndexes": [],
+    "acceptanceCriteriaIndexes": [],
+    "steps": [
+      "Press Registrar asistencia",
+      "Press Guardar"
+    ],
+    "checks": [
+      {
+        "afterStep": 0,
+        "expectText": "Nombre y apellido"
+      },
+      {
+        "afterStep": 1,
+        "expectNoText": "Registro exitoso"
+      }
+    ]
+  }
+}

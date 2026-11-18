@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "trace-1",
+  "createdAt": "2026-11-17T22:09:56.313Z",
+  "payload": {
+    "actions": [
+      {
+        "name": "scroll",
+        "summary": "scroll down",
+        "direction": "down",
+        "times": 3
+      },
+      {
+        "name": "scroll",
+        "summary": "scroll up",
+        "direction": "up",
+        "times": 3
+      },
+      {
+        "name": "navigate",
+        "summary": "navigate to \"/recordatorio\"",
+        "url": "/recordatorio"
+      },
+      {
+        "name": "tap",
+        "summary": "tap button \"Sign in with Internet Identity\"",
+        "target": {
+          "role": "button",
+          "name": "Sign in with Internet Identity"
+        }
+      }
+    ],
+    "executor": {
+      "name": "e2e-default-agent",
+      "version": "2"
+    },
+    "recordedFor": {
+      "testId": "registro-y-recordatorio.e2e.ts::registro-y-recordatorio",
+      "targetId": "web",
+      "instructionDigest": "03de02add076bd396106aca0689a80b0f9e2662deed63c051ee70e07ba130395",
+      "paramsDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "callIndex": 0,
+      "agent": "default"
+    },
+    "recordedBy": {
+      "provider": "caffeine-inference.chat",
+      "model": "deepseek-v4.1-flash"
+    },
+    "summary": "Signed in with Internet Identity and opened the reminder page at /recordatorio. It shows \"Recordatorio de la asamblea\" with Programación (Jueves, 27 de noviembre de 2025 · 4:00 p. m., 1 destinatario registrado), the exact notice text, and the \"Enviar recordatorio ahora\" button. No send was performe…",
+    "startPath": "/",
+    "endPath": "/recordatorio",
+    "endAnchors": [
+      {
+        "role": "link",
+        "name": "Recordatorio"
+      },
+      {
+        "text": "Administración"
+      },
+      {
+        "role": "heading",
+        "name": "Recordatorio de la asamblea"
+      },
+      {
+        "text": "Revisa la programación del recordatorio y envíalo a los números registrados."
+      },
+      {
+        "role": "heading",
+        "name": "Programación"
+      },
+      {
+        "text": "Fecha y hora"
+      },
+      {
+        "text": "Destinatarios registrados"
+      },
+      {
+        "role": "heading",
+        "name": "Aviso del recordatorio"
+      }
+    ],
+    "goneAnchors": [
+      {
+        "role": "status",
+        "name": "Registro exitoso"
+      },
+      {
+        "text": "Vente Venezuela Municipio Francisco de Miranda te invita"
+      },
+      {
+        "role": "heading",
+        "name": "Gran Asamblea de Productores"
+      },
+      {
+        "text": "El Arroz en crisis"
+      },
+      {
+        "text": "Acompáñanos a discutir el futuro del sector productivo y las soluciones necesarias para nuestra región."
+      },
+      {
+        "role": "link",
+        "name": "Registrar asistencia"
+      },
+      {
+        "role": "link",
+        "name": "Conocer el evento"
+      },
+      {
+        "role": "image",
+        "name": "María Corina Machado sonriente conduciendo un tractor naranja entre un sembradío de maíz al atardecer"
+      }
+    ],
+    "endWaitMs": 20145,
+    "keyedBy": {
+      "cacheSchema": "trace-1",
+      "policyVersion": "conservative/6",
+      "project": "403fcccf39e2650a7e389bda5a9246bfe8c725769a98b3a749be67a096c16423",
+      "platform": "web",
+      "engineName": "web",
+      "engineSpiVersion": 1,
+      "appIdentity": "aec5acc8a8d7ba14d388c35095196d67ae7ad7199ff1168a3230addcf190cf8d",
+      "agentContextDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}
