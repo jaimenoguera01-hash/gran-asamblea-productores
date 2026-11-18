@@ -188,7 +188,7 @@ export interface backendInterface {
     getReminderInfo(): Promise<ReminderInfo>;
     isCallerAdmin(): Promise<boolean>;
     /**
-     * / Return all attendance registrations so the page can export them as a table.
+     * / Return all attendance registrations. Administrator only.
      */
     listAttendance(): Promise<Array<Attendance>>;
     /**

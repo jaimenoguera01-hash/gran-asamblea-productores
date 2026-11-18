@@ -8,7 +8,22 @@ const HEADERS = [
   "Email",
   "Municipio",
   "Parroquia",
+  "Fecha de registro",
 ] as const;
+
+const DATE_FORMATTER = new Intl.DateTimeFormat("es-VE", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+});
+
+/** Motoko timestamps are nanosecond bigints; convert before any Date use. */
+function formatRegisteredAt(timestamp: bigint): string {
+  const date = new Date(Number(timestamp / 1_000_000n));
+  return Number.isNaN(date.getTime())
+    ? "Fecha no disponible"
+    : DATE_FORMATTER.format(date);
+}
 
 /** Build and download an .xlsx table of every saved attendance record. */
 export function downloadAttendanceXlsx(records: Attendance[]): void {
@@ -19,6 +34,7 @@ export function downloadAttendanceXlsx(records: Attendance[]): void {
     record.email,
     record.municipio,
     record.parroquia,
+    formatRegisteredAt(record.registeredAt),
   ]);
 
   const worksheet = XLSX.utils.aoa_to_sheet([[...HEADERS], ...rows]);
@@ -29,6 +45,7 @@ export function downloadAttendanceXlsx(records: Attendance[]): void {
     { wch: 30 },
     { wch: 22 },
     { wch: 22 },
+    { wch: 18 },
   ];
 
   const workbook = XLSX.utils.book_new();

@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "spec": {
+    "id": "public-registration-and-hidden-data",
+    "kind": "interactive",
+    "goal": "Un visitante anónimo se registra y no ve ningún dato de asistentes en la página pública",
+    "requirementIndexes": [
+      0,
+      1,
+      4,
+      5,
+      6
+    ],
+    "acceptanceCriteriaIndexes": [
+      0,
+      1,
+      5,
+      6,
+      8
+    ],
+    "steps": [
+      "Open the home page",
+      "Register an attendee named Ana Perez with cedula 12345678, phone 04140000001, email ana@example.com, municipio Calabozo and parroquia Centro",
+      "Open the administration page"
+    ],
+    "checks": [
+      {
+        "afterStep": 0,
+        "expectText": "Registra tu participación"
+      },
+      {
+        "afterStep": 1,
+        "expectText": "Registro exitoso"
+      },
+      {
+        "afterStep": 1,
+        "expectNoText": "Descargar Excel"
+      },
+      {
+        "afterStep": 2,
+        "expectText": "Iniciar sesión"
+      }
+    ]
+  }
+}

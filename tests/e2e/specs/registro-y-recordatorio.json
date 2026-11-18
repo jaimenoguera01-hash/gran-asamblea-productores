@@ -4,29 +4,8 @@
     "id": "registro-y-recordatorio",
     "kind": "interactive",
     "goal": "Un productor se registra en la asamblea y el administrador revisa el recordatorio programado y lo envía",
-    "requirementIndexes": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9
-    ],
-    "acceptanceCriteriaIndexes": [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8
-    ],
+    "requirementIndexes": [],
+    "acceptanceCriteriaIndexes": [],
     "steps": [
       "Registrar un productor con nombre Ana Pérez, cédula 12345678, teléfono 04141234567, correo ana@example.com, municipio Calabozo y parroquia Centro",
       "Abrir la página del recordatorio",

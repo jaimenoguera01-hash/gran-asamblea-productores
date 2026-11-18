@@ -69,6 +69,26 @@ export function useIsCallerAdmin() {
   });
 }
 
+/**
+ * Attendance registrations for the administration section.
+ * The query only runs once the caller is confirmed as an administrator, so a
+ * non-admin never triggers the admin-only backend call. Exposes loading, error
+ * and retry through the returned React Query result.
+ */
+export function useAdminAttendanceList() {
+  const { actor, isFetching } = useActor(createActor);
+  const { data: isAdmin } = useIsCallerAdmin();
+  return useQuery<Attendance[]>({
+    queryKey: ["attendance", "admin"],
+    queryFn: async () => {
+      if (!actor) return [];
+      return actor.listAttendance();
+    },
+    enabled: !!actor && !isFetching && isAdmin === true,
+    retry: 1,
+  });
+}
+
 /** Scheduled date/time, notice text and recipient count of the reminder. */
 export function useReminderInfo() {
   const { actor, isFetching } = useActor(createActor);

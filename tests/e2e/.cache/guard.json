@@ -1,13 +1,29 @@
 {
   "version": 1,
   "flows": {
+    "admin-sees-attendees": {
+      "plan": [
+        "11e73b21d965a266",
+        "24fcf0764db76449",
+        "3ffdf827272a309b",
+        "58150f6f5de3698b",
+        "7288f9d2dfd37824",
+        "a9707bfd3dbb71f6",
+        "a9e00c658102ac9d",
+        "b6d809b7f010bd9c",
+        "d019424a9a0f3ab2",
+        "d09c833cf74856ca",
+        "ef5d8f8176c1ebed"
+      ],
+      "last": "failed"
+    },
     "descarga-excel": {
       "plan": [
         "1bc9c674955a59c3",
         "768466b4628ed1a0",
         "84a4e0b32de53043"
       ],
-      "last": "passed"
+      "last": "failed"
     },
     "event-date-visible": {
       "plan": [
@@ -25,6 +41,21 @@
         "d44fb5699a962856"
       ],
       "last": "passed"
+    },
+    "public-registration-and-hidden-data": {
+      "plan": [
+        "0c92947805229af9",
+        "3e10fcc5d316390c",
+        "67458200c933c421",
+        "729fbaa9a65ee6bd",
+        "870dffbc00df8f34",
+        "87f82ca8c5e45daa",
+        "9e72c12e888cf2dc",
+        "cc6ab94b5c243981",
+        "dd1ae076ad2dd939",
+        "ec7c669846491689"
+      ],
+      "last": "failed"
     },
     "registro-asistencia": {
       "plan": [
@@ -75,7 +106,7 @@
         "fcd73d7d843c782c",
         "fd39fbfd95fea31e"
       ],
-      "last": "passed"
+      "last": "blocked"
     },
     "validacion-campos": {
       "plan": [
@@ -91,6 +122,8 @@
     "validacion-campos",
     "event-date-visible",
     "event-location",
-    "registro-y-recordatorio"
+    "registro-y-recordatorio",
+    "public-registration-and-hidden-data",
+    "admin-sees-attendees"
   ]
 }

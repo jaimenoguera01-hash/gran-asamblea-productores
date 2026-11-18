@@ -96,7 +96,7 @@ service : {
   /// Administrator only.
   getReminderInfo: () -> (ReminderInfo) query;
   isCallerAdmin: () -> (bool) query;
-  /// Return all attendance registrations so the page can export them as a table.
+  /// Return all attendance registrations. Administrator only.
   listAttendance: () -> (vec Attendance) query;
   /// Register attendance for the event. Open to any visitor, no sign-in required.
   registerAttendance: (input: AttendanceInput) -> (Attendance);

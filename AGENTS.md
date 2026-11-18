@@ -12,8 +12,8 @@
 ## Accepted Requirements
 
 - Recordatorio programado para el 27 de noviembre de 2026 a las 12:00 del mediodía con el aviso «Venezuela, Guárico y Calabozo cuentan contigo» y la invitación a la asamblea en el lugar y la hora pautados
-- Envío del recordatorio a todos los números de teléfono registrados en el evento
-- Panel de administración protegido por inicio de sesión para revisar y enviar el recordatorio
+- La lista de asistentes y la exportación a Excel quedan visibles únicamente para el administrador que inicia sesión
+- El registro público de asistentes y el resto de la página pública siguen funcionando igual
 
 ## Verified Commands
 
@@ -41,3 +41,10 @@
 - SendOutcome es una unión __kind__ (sent/noRecipients/failed); renderizar cada rama como un estado distinto.
 - El enrutado usa TanStack Router en modo código: rootRoute renderiza <Layout><Outlet/></Layout>, con '/' -> Home y '/recordatorio' -> Reminder; los anclajes de sección usan Link to='/' hash='...'.
 - Las migraciones ya aplicadas son de solo lectura; el estado estable nuevo va en un archivo de migración nuevo con nombre posterior a todos los existentes.
+- La lista de asistentes y su descarga en Excel viven solo en la ruta /administracion, envuelta en AdminGate (RequireSignIn + useIsCallerAdmin); la portada pública no importa AttendanceList ni AttendanceExport.
+- useAdminAttendanceList usa enabled: isAdmin === true, así que un no administrador nunca dispara listAttendance; el backend además hace trap para no administradores.
+- OQL no tiene nivel solo-administrador: .ownedByWith(field, canSee) + .controllerOrScoped() restringe las lecturas a llamadores con AccessControl.isAdmin y niega a los anónimos.
+- AdminGate compone RequireSignIn + AdminRoleGate, así que una visita directa a /administracion queda protegida por inicio de sesión y por rol, no solo por el enlace de navegación oculto.
+- Las animaciones decorativas de Tailwind necesitan motion-safe: o motion-reduce:animate-none para respetar prefers-reduced-motion.
+- bash rm está denegado en este entorno; para retirar un componente asignado que ya no se usa, se sobrescribe con un módulo vacío válido en lugar de borrarlo.
+- Un flujo e2e que pulsa el control de exportación de asistentes debe iniciar sesión y navegar a /administracion primero: el control es solo para el administrador.

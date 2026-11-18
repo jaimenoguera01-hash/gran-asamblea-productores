@@ -1,19 +1,18 @@
 {
-  "overview": "Sitio de registro de asistencia para la Gran Asamblea de Productores de Vente Venezuela, con un recordatorio programado que avisa a los productores registrados.",
+  "overview": "Página de registro para la asamblea de productores de Guárico y Calabozo, con registro público de asistentes y una sección de administración protegida donde solo el administrador ve y descarga la lista de asistentes.",
   "features": [
-    "Registro de asistencia de productores con nombre, cédula, teléfono, correo, municipio y parroquia",
-    "Lista de asistentes registrados y descarga en Excel",
-    "Recordatorio programado para el 27 de noviembre de 2026 a las 12:00 del mediodía con el aviso «Venezuela, Guárico y Calabozo cuentan contigo»",
-    "Envío del recordatorio a todos los números de teléfono registrados en el evento",
-    "Panel de administración protegido por inicio de sesión para revisar y enviar el recordatorio"
+    "Registro público de asistentes con nombre, cédula, teléfono, correo, municipio y parroquia",
+    "Lista de asistentes visible únicamente para el administrador que inicia sesión",
+    "Descarga de la lista de asistentes en Excel solo para el administrador",
+    "Sección de administración protegida por inicio de sesión y rol de administrador",
+    "Recordatorio programado de la asamblea con aviso por correo a los números registrados"
   ],
   "category": "event-registration",
   "tags": [
     "eventos",
     "registro",
-    "recordatorios",
-    "venezuela",
-    "productores"
+    "asamblea",
+    "administracion"
   ],
-  "last_updated": "2026-11-17T22:02:53.384Z"
+  "last_updated": "2026-11-18T12:22:28.606Z"
 }

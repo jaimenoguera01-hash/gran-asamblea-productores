@@ -1,7 +1,7 @@
 import { PartyLogo } from "@/components/PartyLogo";
 import { useIsCallerAdmin } from "@/hooks/useQueries";
 import { Link } from "@tanstack/react-router";
-import { Settings2 } from "lucide-react";
+import { LayoutDashboard, Settings2 } from "lucide-react";
 import type { ReactNode } from "react";
 
 const NAV_LINKS = [
@@ -48,6 +48,16 @@ export function Layout({ children }: { children: ReactNode }) {
             ))}
             {isAdmin && (
               <Link
+                to="/administracion"
+                data-ocid="nav.administracion_link"
+                className="inline-flex items-center gap-1.5 rounded-full border border-white/30 px-3 py-1.5 text-sm font-medium text-white/90 transition-smooth hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+              >
+                <LayoutDashboard className="size-4" />
+                Administración
+              </Link>
+            )}
+            {isAdmin && (
+              <Link
                 to="/recordatorio"
                 data-ocid="nav.recordatorio_link"
                 className="inline-flex items-center gap-1.5 rounded-full border border-white/30 px-3 py-1.5 text-sm font-medium text-white/90 transition-smooth hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
@@ -62,7 +72,7 @@ export function Layout({ children }: { children: ReactNode }) {
             data-ocid="nav.badge"
             className="inline-flex items-center gap-2 rounded-full bg-destructive px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-destructive-foreground shadow-subtle"
           >
-            <span className="h-2 w-2 animate-pulse rounded-full bg-white" />
+            <span className="h-2 w-2 animate-pulse rounded-full bg-white motion-reduce:animate-none" />
             En vivo
           </span>
         </div>

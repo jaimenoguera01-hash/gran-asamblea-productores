@@ -81,7 +81,7 @@ export interface _SERVICE {
   'getReminderInfo' : ActorMethod<[], ReminderInfo>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
   /**
-   * / Return all attendance registrations so the page can export them as a table.
+   * / Return all attendance registrations. Administrator only.
    */
   'listAttendance' : ActorMethod<[], Array<Attendance>>,
   /**

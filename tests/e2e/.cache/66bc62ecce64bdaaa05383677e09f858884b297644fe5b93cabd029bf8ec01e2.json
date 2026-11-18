@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "trace-1",
+  "createdAt": "2026-11-18T12:34:09.647Z",
+  "payload": {
+    "actions": [
+      {
+        "name": "type",
+        "summary": "type \"Ana Perez\" into textbox \"Nombre y apellido\"",
+        "target": {
+          "role": "textbox",
+          "name": "Nombre y apellido",
+          "placeholder": "María Rodríguez"
+        },
+        "value": "Ana Perez"
+      },
+      {
+        "name": "type",
+        "summary": "type \"12345678\" into textbox \"Cédula de identidad\"",
+        "target": {
+          "role": "textbox",
+          "name": "Cédula de identidad",
+          "placeholder": "12345678"
+        },
+        "value": "12345678"
+      },
+      {
+        "name": "type",
+        "summary": "type \"04140000001\" into textbox \"Teléfono\"",
+        "target": {
+          "role": "textbox",
+          "name": "Teléfono",
+          "placeholder": "04141234567"
+        },
+        "value": "04140000001"
+      },
+      {
+        "name": "type",
+        "summary": "type \"ana@example.com\" into textbox \"Email\"",
+        "target": {
+          "role": "textbox",
+          "name": "Email",
+          "placeholder": "correo@ejemplo.com"
+        },
+        "value": "ana@example.com"
+      },
+      {
+        "name": "type",
+        "summary": "type \"Calabozo\" into textbox \"Municipio\"",
+        "target": {
+          "role": "textbox",
+          "name": "Municipio",
+          "placeholder": "Francisco de Miranda"
+        },
+        "value": "Calabozo"
+      },
+      {
+        "name": "type",
+        "summary": "type \"Centro\" into textbox \"Parroquia\"",
+        "target": {
+          "role": "textbox",
+          "name": "Parroquia",
+          "placeholder": "Calabozo"
+        },
+        "value": "Centro"
+      },
+      {
+        "name": "tap",
+        "summary": "tap button \"Guardar\"",
+        "target": {
+          "role": "button",
+          "name": "Guardar"
+        }
+      }
+    ],
+    "executor": {
+      "name": "e2e-default-agent",
+      "version": "2"
+    },
+    "recordedFor": {
+      "testId": "public-registration-and-hidden-data.e2e.ts::public-registration-and-hidden-data",
+      "targetId": "web",
+      "instructionDigest": "ceb64d20fe339c5bb977eafb955ca3243720273ee81f574e41b310f3e4721bc1",
+      "paramsDigest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "callIndex": 0,
+      "agent": "default"
+    },
+    "recordedBy": {
+      "provider": "caffeine-inference.chat",
+      "model": "deepseek-v4.1-flash"
+    },
+    "summary": "Filled the registration form (Ana Perez, cédula 12345678, phone 04140000001, email ana@example.com, municipio Calabozo, parroquia Centro) and pressed Guardar. The form cleared and a status \"Registro exitoso\" appeared, confirming the attendee was registered.",
+    "startPath": "/",
+    "endPath": "/",
+    "endAnchors": [
+      {
+        "role": "status",
+        "name": "Registro exitoso"
+      }
+    ],
+    "endWaitMs": 11408,
+    "keyedBy": {
+      "cacheSchema": "trace-1",
+      "policyVersion": "conservative/6",
+      "project": "403fcccf39e2650a7e389bda5a9246bfe8c725769a98b3a749be67a096c16423",
+      "platform": "web",
+      "engineName": "web",
+      "engineSpiVersion": 1,
+      "appIdentity": "aec5acc8a8d7ba14d388c35095196d67ae7ad7199ff1168a3230addcf190cf8d",
+      "agentContextDigest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  }
+}

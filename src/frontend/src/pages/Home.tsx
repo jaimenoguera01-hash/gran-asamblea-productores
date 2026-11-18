@@ -1,8 +1,5 @@
-import { AttendanceExport } from "@/components/AttendanceExport";
-import { AttendanceList } from "@/components/AttendanceList";
 import { RegistrationForm } from "@/components/RegistrationForm";
 import { Button } from "@/components/ui/button";
-import { useAttendanceList } from "@/hooks/useQueries";
 import { CalendarDays, MapPin, Sprout } from "lucide-react";
 
 const HERO_IMAGE = "/assets/generated/maria-corina-tractor.dim_1200x1000.jpg";
@@ -14,9 +11,6 @@ const EVENT_FACTS = [
 ];
 
 export function Home() {
-  const { data: attendance, isLoading: attendanceLoading } =
-    useAttendanceList();
-
   return (
     <div id="inicio">
       <section className="relative overflow-hidden">
@@ -139,8 +133,8 @@ export function Home() {
               Registra tu participación
             </h2>
             <p className="text-base text-white/85 md:text-lg">
-              Completa el formulario y guarda tu registro. Al finalizar podrás
-              descargar la lista completa de asistentes en formato Excel.
+              Completa el formulario y guarda tu registro. Tu confirmación nos
+              ayuda a preparar la asamblea para todos los productores.
             </p>
             <div className="overflow-hidden rounded-2xl border border-white/25 shadow-glow">
               <img
@@ -156,27 +150,6 @@ export function Home() {
 
           <div className="space-y-6">
             <RegistrationForm />
-            <AttendanceExport />
-            {attendanceLoading ? (
-              <div
-                data-ocid="registro.attendance_list.loading_state"
-                className="rounded-2xl border border-white/20 bg-card/60 p-6 shadow-elevated backdrop-blur-md md:p-8"
-              >
-                <div className="h-6 w-48 animate-pulse rounded bg-white/20 motion-reduce:animate-none" />
-                <div className="mt-5 grid gap-2 sm:grid-cols-2">
-                  {Array.from({ length: 4 }, (_, i) => `skeleton-${i}`).map(
-                    (id) => (
-                      <div
-                        key={id}
-                        className="h-12 animate-pulse rounded-xl bg-white/10 motion-reduce:animate-none"
-                      />
-                    ),
-                  )}
-                </div>
-              </div>
-            ) : attendance && attendance.length > 0 ? (
-              <AttendanceList records={attendance} />
-            ) : null}
           </div>
         </div>
       </section>

@@ -1,4 +1,5 @@
 import { Layout } from "@/components/Layout";
+import { Admin } from "@/pages/Admin";
 import { Home } from "@/pages/Home";
 import { Reminder } from "@/pages/Reminder";
 import {
@@ -23,13 +24,23 @@ const indexRoute = createRoute({
   component: Home,
 });
 
+const adminRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/administracion",
+  component: Admin,
+});
+
 const reminderRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/recordatorio",
   component: Reminder,
 });
 
-const routeTree = rootRoute.addChildren([indexRoute, reminderRoute]);
+const routeTree = rootRoute.addChildren([
+  indexRoute,
+  adminRoute,
+  reminderRoute,
+]);
 
 const router = createRouter({
   routeTree,

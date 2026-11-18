@@ -36130,18 +36130,6 @@ function createActor(canisterId, _uploadFile, _downloadFile, options = {}) {
 }
 //#endregion
 //#region src/hooks/useQueries.ts
-/** All attendance registrations, newest first. */
-function useAttendanceList() {
-	const { actor, isFetching } = useActor(createActor);
-	return useQuery({
-		queryKey: ["attendance"],
-		queryFn: async () => {
-			if (!actor) return [];
-			return actor.listAttendance();
-		},
-		enabled: !!actor && !isFetching
-	});
-}
 /**
 * Fetch the latest attendance records on demand, bypassing the cached list.
 * Used by the Excel export so it always downloads the saved records even when
@@ -36183,6 +36171,25 @@ function useIsCallerAdmin() {
 			return actor.isCallerAdmin();
 		},
 		enabled: !!actor && !isFetching
+	});
+}
+/**
+* Attendance registrations for the administration section.
+* The query only runs once the caller is confirmed as an administrator, so a
+* non-admin never triggers the admin-only backend call. Exposes loading, error
+* and retry through the returned React Query result.
+*/
+function useAdminAttendanceList() {
+	const { actor, isFetching } = useActor(createActor);
+	const { data: isAdmin } = useIsCallerAdmin();
+	return useQuery({
+		queryKey: ["attendance", "admin"],
+		queryFn: async () => {
+			if (!actor) return [];
+			return actor.listAttendance();
+		},
+		enabled: !!actor && !isFetching && isAdmin === true,
+		retry: 1
 	});
 }
 /** Scheduled date/time, notice text and recipient count of the reminder. */
@@ -40772,34 +40779,6 @@ var CalendarDays = createLucideIcon("calendar-days", [
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
-var CircleAlert = createLucideIcon("circle-alert", [
-	["circle", {
-		cx: "12",
-		cy: "12",
-		r: "10",
-		key: "1mglay"
-	}],
-	["line", {
-		x1: "12",
-		x2: "12",
-		y1: "8",
-		y2: "12",
-		key: "1pkeuh"
-	}],
-	["line", {
-		x1: "12",
-		x2: "12.01",
-		y1: "16",
-		y2: "16",
-		key: "4dfq90"
-	}]
-]);
-/**
-* @license lucide-react v0.511.0 - ISC
-*
-* This source code is licensed under the ISC license.
-* See the LICENSE file in the root directory of this source tree.
-*/
 var CircleCheck = createLucideIcon("circle-check", [["circle", {
 	cx: "12",
 	cy: "12",
@@ -40827,6 +40806,46 @@ var Download = createLucideIcon("download", [
 	["path", {
 		d: "m7 10 5 5 5-5",
 		key: "brsn70"
+	}]
+]);
+/**
+* @license lucide-react v0.511.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var LayoutDashboard = createLucideIcon("layout-dashboard", [
+	["rect", {
+		width: "7",
+		height: "9",
+		x: "3",
+		y: "3",
+		rx: "1",
+		key: "10lvy0"
+	}],
+	["rect", {
+		width: "7",
+		height: "5",
+		x: "14",
+		y: "3",
+		rx: "1",
+		key: "16une8"
+	}],
+	["rect", {
+		width: "7",
+		height: "9",
+		x: "14",
+		y: "12",
+		rx: "1",
+		key: "1hutg5"
+	}],
+	["rect", {
+		width: "7",
+		height: "5",
+		x: "3",
+		y: "16",
+		rx: "1",
+		key: "ldoo1y"
 	}]
 ]);
 /**
@@ -40872,6 +40891,30 @@ var MessageSquareText = createLucideIcon("message-square-text", [
 	["path", {
 		d: "M17 12H7",
 		key: "16if0g"
+	}]
+]);
+/**
+* @license lucide-react v0.511.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
+var RefreshCw = createLucideIcon("refresh-cw", [
+	["path", {
+		d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8",
+		key: "v9h5vc"
+	}],
+	["path", {
+		d: "M21 3v5h-5",
+		key: "1q7to0"
+	}],
+	["path", {
+		d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16",
+		key: "3uifl3"
+	}],
+	["path", {
+		d: "M8 16H3v5",
+		key: "1cv678"
 	}]
 ]);
 /**
@@ -40985,6 +41028,21 @@ var TriangleAlert = createLucideIcon("triangle-alert", [
 * This source code is licensed under the ISC license.
 * See the LICENSE file in the root directory of this source tree.
 */
+var UserRound = createLucideIcon("user-round", [["circle", {
+	cx: "12",
+	cy: "8",
+	r: "5",
+	key: "1hypcn"
+}], ["path", {
+	d: "M20 21a8 8 0 0 0-16 0",
+	key: "rfgkzh"
+}]]);
+/**
+* @license lucide-react v0.511.0 - ISC
+*
+* This source code is licensed under the ISC license.
+* See the LICENSE file in the root directory of this source tree.
+*/
 var Users = createLucideIcon("users", [
 	["path", {
 		d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2",
@@ -41053,23 +41111,32 @@ function Layout({ children }) {
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("nav", {
 							"aria-label": "Navegación principal",
 							className: "hidden items-center gap-6 md:flex",
-							children: [NAV_LINKS.map((link) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
-								to: "/",
-								hash: link.hash,
-								"data-ocid": "nav.link",
-								className: "text-sm font-medium text-white/85 transition-smooth hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white",
-								children: link.label
-							}, link.hash)), isAdmin && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
-								to: "/recordatorio",
-								"data-ocid": "nav.recordatorio_link",
-								className: "inline-flex items-center gap-1.5 rounded-full border border-white/30 px-3 py-1.5 text-sm font-medium text-white/90 transition-smooth hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings2, { className: "size-4" }), "Recordatorio"]
-							})]
+							children: [
+								NAV_LINKS.map((link) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Link, {
+									to: "/",
+									hash: link.hash,
+									"data-ocid": "nav.link",
+									className: "text-sm font-medium text-white/85 transition-smooth hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white",
+									children: link.label
+								}, link.hash)),
+								isAdmin && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+									to: "/administracion",
+									"data-ocid": "nav.administracion_link",
+									className: "inline-flex items-center gap-1.5 rounded-full border border-white/30 px-3 py-1.5 text-sm font-medium text-white/90 transition-smooth hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LayoutDashboard, { className: "size-4" }), "Administración"]
+								}),
+								isAdmin && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
+									to: "/recordatorio",
+									"data-ocid": "nav.recordatorio_link",
+									className: "inline-flex items-center gap-1.5 rounded-full border border-white/30 px-3 py-1.5 text-sm font-medium text-white/90 transition-smooth hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Settings2, { className: "size-4" }), "Recordatorio"]
+								})
+							]
 						}),
 						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 							"data-ocid": "nav.badge",
 							className: "inline-flex items-center gap-2 rounded-full bg-destructive px-3 py-1.5 text-xs font-semibold uppercase tracking-widest text-destructive-foreground shadow-subtle",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-2 w-2 animate-pulse rounded-full bg-white" }), "En vivo"]
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "h-2 w-2 animate-pulse rounded-full bg-white motion-reduce:animate-none" }), "En vivo"]
 						})
 					]
 				})
@@ -41136,252 +41203,6 @@ function Layout({ children }) {
 				})]
 			})
 		]
-	});
-}
-//#endregion
-//#region src/components/AttendanceList.tsx
-/**
-* Visible list of the attendance records already saved in the backend, showing
-* each attendee's name and surname so the page proves the registrations stuck.
-*/
-function AttendanceList({ records, title = "Asistentes registrados" }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		"data-ocid": "registro.attendance_list",
-		className: "rounded-2xl border border-white/20 bg-card/60 p-6 shadow-elevated backdrop-blur-md md:p-8",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex items-center gap-3",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-				className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "size-5" })
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "min-w-0",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-					className: "font-display text-xl font-bold tracking-tight text-white md:text-2xl",
-					children: title
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-sm text-white/80",
-					children: records.length === 1 ? "1 persona ha confirmado su asistencia." : `${records.length} personas han confirmado su asistencia.`
-				})]
-			})]
-		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
-			className: "mt-5 grid gap-2 sm:grid-cols-2",
-			children: records.map((record, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
-				"data-ocid": `registro.attendance_list.item.${index + 1}`,
-				className: "flex items-center gap-3 rounded-xl border border-white/15 bg-white/10 px-4 py-3",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/25 font-mono text-xs font-semibold text-white",
-					children: index + 1
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-					className: "min-w-0 truncate text-sm font-medium text-white",
-					children: record.fullName
-				})]
-			}, record.id.toString()))
-		})]
-	});
-}
-//#endregion
-//#region ../../../../../../opt/pnpm-templates/build_template/node_modules/.pnpm/@radix-ui+react-compose-refs@1.1.2_@types+react@19.1.17_react@19.1.5/node_modules/@radix-ui/react-compose-refs/dist/index.mjs
-function setRef(ref, value) {
-	if (typeof ref === "function") return ref(value);
-	else if (ref !== null && ref !== void 0) ref.current = value;
-}
-function composeRefs(...refs) {
-	return (node) => {
-		let hasCleanup = false;
-		const cleanups = refs.map((ref) => {
-			const cleanup = setRef(ref, node);
-			if (!hasCleanup && typeof cleanup == "function") hasCleanup = true;
-			return cleanup;
-		});
-		if (hasCleanup) return () => {
-			for (let i = 0; i < cleanups.length; i++) {
-				const cleanup = cleanups[i];
-				if (typeof cleanup == "function") cleanup();
-				else setRef(refs[i], null);
-			}
-		};
-	};
-}
-//#endregion
-//#region ../../../../../../opt/pnpm-templates/build_template/node_modules/.pnpm/@radix-ui+react-slot@1.2.4_@types+react@19.1.17_react@19.1.5/node_modules/@radix-ui/react-slot/dist/index.mjs
-var REACT_LAZY_TYPE = Symbol.for("react.lazy");
-var use = import_react[" use ".trim().toString()];
-function isPromiseLike(value) {
-	return typeof value === "object" && value !== null && "then" in value;
-}
-function isLazyComponent(element) {
-	return element != null && typeof element === "object" && "$$typeof" in element && element.$$typeof === REACT_LAZY_TYPE && "_payload" in element && isPromiseLike(element._payload);
-}
-// @__NO_SIDE_EFFECTS__
-function createSlot(ownerName) {
-	const SlotClone = /* @__PURE__ */ createSlotClone(ownerName);
-	const Slot2 = import_react.forwardRef((props, forwardedRef) => {
-		let { children, ...slotProps } = props;
-		if (isLazyComponent(children) && typeof use === "function") children = use(children._payload);
-		const childrenArray = import_react.Children.toArray(children);
-		const slottable = childrenArray.find(isSlottable);
-		if (slottable) {
-			const newElement = slottable.props.children;
-			const newChildren = childrenArray.map((child) => {
-				if (child === slottable) {
-					if (import_react.Children.count(newElement) > 1) return import_react.Children.only(null);
-					return import_react.isValidElement(newElement) ? newElement.props.children : null;
-				} else return child;
-			});
-			return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SlotClone, {
-				...slotProps,
-				ref: forwardedRef,
-				children: import_react.isValidElement(newElement) ? import_react.cloneElement(newElement, void 0, newChildren) : null
-			});
-		}
-		return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SlotClone, {
-			...slotProps,
-			ref: forwardedRef,
-			children
-		});
-	});
-	Slot2.displayName = `${ownerName}.Slot`;
-	return Slot2;
-}
-var Slot = /* @__PURE__ */ createSlot("Slot");
-// @__NO_SIDE_EFFECTS__
-function createSlotClone(ownerName) {
-	const SlotClone = import_react.forwardRef((props, forwardedRef) => {
-		let { children, ...slotProps } = props;
-		if (isLazyComponent(children) && typeof use === "function") children = use(children._payload);
-		if (import_react.isValidElement(children)) {
-			const childrenRef = getElementRef(children);
-			const props2 = mergeProps(slotProps, children.props);
-			if (children.type !== import_react.Fragment) props2.ref = forwardedRef ? composeRefs(forwardedRef, childrenRef) : childrenRef;
-			return import_react.cloneElement(children, props2);
-		}
-		return import_react.Children.count(children) > 1 ? import_react.Children.only(null) : null;
-	});
-	SlotClone.displayName = `${ownerName}.SlotClone`;
-	return SlotClone;
-}
-var SLOTTABLE_IDENTIFIER = Symbol("radix.slottable");
-function isSlottable(child) {
-	return import_react.isValidElement(child) && typeof child.type === "function" && "__radixId" in child.type && child.type.__radixId === SLOTTABLE_IDENTIFIER;
-}
-function mergeProps(slotProps, childProps) {
-	const overrideProps = { ...childProps };
-	for (const propName in childProps) {
-		const slotPropValue = slotProps[propName];
-		const childPropValue = childProps[propName];
-		if (/^on[A-Z]/.test(propName)) {
-			if (slotPropValue && childPropValue) overrideProps[propName] = (...args) => {
-				const result = childPropValue(...args);
-				slotPropValue(...args);
-				return result;
-			};
-			else if (slotPropValue) overrideProps[propName] = slotPropValue;
-		} else if (propName === "style") overrideProps[propName] = {
-			...slotPropValue,
-			...childPropValue
-		};
-		else if (propName === "className") overrideProps[propName] = [slotPropValue, childPropValue].filter(Boolean).join(" ");
-	}
-	return {
-		...slotProps,
-		...overrideProps
-	};
-}
-function getElementRef(element) {
-	let getter = Object.getOwnPropertyDescriptor(element.props, "ref")?.get;
-	let mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
-	if (mayWarn) return element.ref;
-	getter = Object.getOwnPropertyDescriptor(element, "ref")?.get;
-	mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
-	if (mayWarn) return element.props.ref;
-	return element.props.ref || element.ref;
-}
-//#endregion
-//#region ../../../../../../opt/pnpm-templates/build_template/node_modules/.pnpm/class-variance-authority@0.7.1/node_modules/class-variance-authority/dist/index.mjs
-/**
-* Copyright 2022 Joe Bell. All rights reserved.
-*
-* This file is licensed to you under the Apache License, Version 2.0
-* (the "License"); you may not use this file except in compliance with the
-* License. You may obtain a copy of the License at
-*
-*   http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-* WARRANTIES OR REPRESENTATIONS OF ANY KIND, either express or implied. See the
-* License for the specific language governing permissions and limitations under
-* the License.
-*/ var falsyToString = (value) => typeof value === "boolean" ? `${value}` : value === 0 ? "0" : value;
-var cx = clsx;
-var cva = (base, config) => (props) => {
-	var _config_compoundVariants;
-	if ((config === null || config === void 0 ? void 0 : config.variants) == null) return cx(base, props === null || props === void 0 ? void 0 : props.class, props === null || props === void 0 ? void 0 : props.className);
-	const { variants, defaultVariants } = config;
-	const getVariantClassNames = Object.keys(variants).map((variant) => {
-		const variantProp = props === null || props === void 0 ? void 0 : props[variant];
-		const defaultVariantProp = defaultVariants === null || defaultVariants === void 0 ? void 0 : defaultVariants[variant];
-		if (variantProp === null) return null;
-		const variantKey = falsyToString(variantProp) || falsyToString(defaultVariantProp);
-		return variants[variant][variantKey];
-	});
-	const propsWithoutUndefined = props && Object.entries(props).reduce((acc, param) => {
-		let [key, value] = param;
-		if (value === void 0) return acc;
-		acc[key] = value;
-		return acc;
-	}, {});
-	return cx(base, getVariantClassNames, config === null || config === void 0 ? void 0 : (_config_compoundVariants = config.compoundVariants) === null || _config_compoundVariants === void 0 ? void 0 : _config_compoundVariants.reduce((acc, param) => {
-		let { class: cvClass, className: cvClassName, ...compoundVariantOptions } = param;
-		return Object.entries(compoundVariantOptions).every((param) => {
-			let [key, value] = param;
-			return Array.isArray(value) ? value.includes({
-				...defaultVariants,
-				...propsWithoutUndefined
-			}[key]) : {
-				...defaultVariants,
-				...propsWithoutUndefined
-			}[key] === value;
-		}) ? [
-			...acc,
-			cvClass,
-			cvClassName
-		] : acc;
-	}, []), props === null || props === void 0 ? void 0 : props.class, props === null || props === void 0 ? void 0 : props.className);
-};
-//#endregion
-//#region src/components/ui/button.tsx
-var buttonVariants = cva("inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive", {
-	variants: {
-		variant: {
-			default: "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
-			destructive: "bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
-			outline: "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
-			secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
-			ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
-			link: "text-primary underline-offset-4 hover:underline"
-		},
-		size: {
-			default: "h-9 px-4 py-2 has-[>svg]:px-3",
-			sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
-			lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
-			icon: "size-9"
-		}
-	},
-	defaultVariants: {
-		variant: "default",
-		size: "default"
-	}
-});
-function Button({ className, variant, size, asChild = false, ...props }) {
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot : "button", {
-		"data-slot": "button",
-		className: cn(buttonVariants({
-			variant,
-			size,
-			className
-		})),
-		...props
 	});
 }
 //#endregion
@@ -58579,8 +58400,19 @@ var HEADERS = [
 	"Teléfono",
 	"Email",
 	"Municipio",
-	"Parroquia"
+	"Parroquia",
+	"Fecha de registro"
 ];
+var DATE_FORMATTER$2 = new Intl.DateTimeFormat("es-VE", {
+	day: "2-digit",
+	month: "2-digit",
+	year: "numeric"
+});
+/** Motoko timestamps are nanosecond bigints; convert before any Date use. */
+function formatRegisteredAt$1(timestamp) {
+	const date = new Date(Number(timestamp / 1000000n));
+	return Number.isNaN(date.getTime()) ? "Fecha no disponible" : DATE_FORMATTER$2.format(date);
+}
 /** Build and download an .xlsx table of every saved attendance record. */
 function downloadAttendanceXlsx(records) {
 	const rows = records.map((record) => [
@@ -58589,7 +58421,8 @@ function downloadAttendanceXlsx(records) {
 		record.phone,
 		record.email,
 		record.municipio,
-		record.parroquia
+		record.parroquia,
+		formatRegisteredAt$1(record.registeredAt)
 	]);
 	const worksheet = utils.aoa_to_sheet([[...HEADERS], ...rows]);
 	worksheet["!cols"] = [
@@ -58598,90 +58431,562 @@ function downloadAttendanceXlsx(records) {
 		{ wch: 16 },
 		{ wch: 30 },
 		{ wch: 22 },
-		{ wch: 22 }
+		{ wch: 22 },
+		{ wch: 18 }
 	];
 	const workbook = utils.book_new();
 	utils.book_append_sheet(workbook, worksheet, "Asistentes");
 	writeFileSync(workbook, "asistentes-asamblea-productores.xlsx");
 }
 //#endregion
-//#region src/components/AttendanceExport.tsx
-function AttendanceExport() {
+//#region src/components/AttendanceAdminPanel.tsx
+var DATE_FORMATTER$1 = new Intl.DateTimeFormat("es-VE", {
+	day: "numeric",
+	month: "short",
+	year: "numeric"
+});
+/** Motoko timestamps are nanosecond bigints; convert before any Date use. */
+function formatRegisteredAt(timestamp) {
+	const date = new Date(Number(timestamp / 1000000n));
+	return Number.isNaN(date.getTime()) ? "Fecha no disponible" : DATE_FORMATTER$1.format(date);
+}
+/**
+* Administration panel for the attendance registrations.
+* Shows the complete list of registered attendees and lets the administrator
+* download it as an Excel file, with clear loading, error, empty and success
+* states for both the list and the export.
+*/
+function AttendanceAdminPanel() {
+	const { data: records, isLoading, isError, refetch, isFetching } = useAdminAttendanceList();
 	const fetchAttendance = useFetchAttendance();
-	const [status, setStatus] = (0, import_react.useState)({ kind: "idle" });
-	const [records, setRecords] = (0, import_react.useState)([]);
-	const handleExport = async () => {
-		setStatus({ kind: "loading" });
+	const [isExporting, setIsExporting] = (0, import_react.useState)(false);
+	const [exportError, setExportError] = (0, import_react.useState)(false);
+	const [exportSuccess, setExportSuccess] = (0, import_react.useState)(false);
+	const hasRecords = !!records && records.length > 0;
+	async function handleExport() {
+		setIsExporting(true);
+		setExportError(false);
+		setExportSuccess(false);
 		try {
-			const fetched = await fetchAttendance();
-			setRecords(fetched);
-			if (fetched.length === 0) {
-				setStatus({ kind: "empty" });
+			const latest = await fetchAttendance();
+			if (latest.length === 0) {
+				setExportError(true);
 				return;
 			}
-			downloadAttendanceXlsx(fetched);
-			setStatus({
-				kind: "success",
-				count: fetched.length
-			});
+			downloadAttendanceXlsx(latest);
+			setExportSuccess(true);
 		} catch {
-			setStatus({ kind: "error" });
+			setExportError(true);
+		} finally {
+			setIsExporting(false);
 		}
-	};
-	const isLoading = status.kind === "loading";
+	}
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6",
-		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			"data-ocid": "registro.export_panel",
-			className: "rounded-2xl border border-white/20 bg-card/60 p-6 shadow-elevated backdrop-blur-md md:p-8",
-			children: [
-				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "space-y-1.5",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+		"data-ocid": "admin.attendance_panel",
+		className: "mt-10 rounded-2xl border border-white/20 bg-card/60 p-6 shadow-elevated backdrop-blur-md md:p-8",
+		children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center gap-3",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Users, { className: "size-5" })
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "min-w-0",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
 							className: "font-display text-xl font-bold tracking-tight text-white md:text-2xl",
-							children: "Lista de asistentes"
+							children: "Asistentes registrados"
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 							className: "text-sm text-white/80",
-							children: "Descarga todos los registros guardados en una tabla de Excel."
+							children: hasRecords ? records.length === 1 ? "1 persona ha confirmado su asistencia." : `${records.length} personas han confirmado su asistencia.` : "Lista completa de registros de la asamblea."
 						})]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-						type: "button",
-						onClick: handleExport,
-						disabled: isLoading,
-						"aria-busy": isLoading,
-						"data-ocid": "registro.export_button",
-						className: "h-12 shrink-0 rounded-full bg-primary px-7 text-base font-semibold text-primary-foreground shadow-elevated transition-smooth hover:-translate-y-0.5 hover:bg-primary/90 disabled:translate-y-0 disabled:opacity-70",
-						children: isLoading ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "size-4 animate-spin" }), "Preparando…"] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "size-4" }), "Descargar Excel"] })
 					})]
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+					type: "button",
+					"data-ocid": "admin.attendance_panel.export_button",
+					onClick: () => void handleExport(),
+					disabled: isExporting || isLoading || isError,
+					className: "inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 font-semibold text-primary-foreground transition-smooth hover:brightness-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-50",
+					children: [isExporting ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "size-4 animate-spin motion-reduce:animate-none" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "size-4" }), isExporting ? "Generando Excel…" : "Descargar Excel"]
+				})]
+			}),
+			exportError && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+				role: "alert",
+				"data-ocid": "admin.attendance_panel.export_error_state",
+				className: "mt-4 flex items-start gap-2 rounded-xl border border-destructive/50 bg-destructive/20 p-3 text-sm text-white",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TriangleAlert, { className: "mt-0.5 size-4 shrink-0" }), "No se pudo generar el archivo Excel. Intenta de nuevo."]
+			}),
+			exportSuccess && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("output", {
+				"data-ocid": "admin.attendance_panel.export_success_state",
+				className: "mt-4 flex items-start gap-2 rounded-xl border border-success/60 bg-success/25 p-3 text-sm font-medium text-white",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "mt-0.5 size-4 shrink-0" }), "El archivo asistentes-asamblea-productores.xlsx se descargó correctamente."]
+			}),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+				className: "mt-6",
+				children: isLoading ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("output", {
+					"data-ocid": "admin.attendance_panel.loading_state",
+					className: "flex items-center gap-2 text-white/85",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "size-5 animate-spin motion-reduce:animate-none" }), "Cargando los registros de asistencia…"]
+				}) : isError ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					"data-ocid": "admin.attendance_panel.error_state",
+					className: "flex flex-col items-start gap-4 rounded-xl border border-white/20 bg-background/30 p-6",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "flex h-12 w-12 items-center justify-center rounded-full bg-destructive/25 text-white",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(TriangleAlert, { className: "size-6" })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+							className: "font-display text-lg font-semibold text-white",
+							children: "No pudimos cargar los registros"
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "mt-1 text-sm text-white/85",
+							children: "Ocurrió un problema al consultar la lista de asistentes. Intenta de nuevo."
+						})] }),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("button", {
+							type: "button",
+							"data-ocid": "admin.attendance_panel.retry_button",
+							onClick: () => void refetch(),
+							disabled: isFetching,
+							className: "inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 font-semibold text-primary-foreground transition-smooth hover:brightness-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:opacity-60",
+							children: [isFetching ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "size-4 animate-spin motion-reduce:animate-none" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCw, { className: "size-4" }), "Reintentar"]
+						})
+					]
+				}) : hasRecords ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("ul", {
+					"data-ocid": "admin.attendance_panel.list",
+					className: "grid gap-3 lg:grid-cols-2",
+					children: records.map((record, index) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AttendanceRow, {
+						record,
+						position: index + 1
+					}, record.id.toString()))
+				}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					"data-ocid": "admin.attendance_panel.empty_state",
+					className: "flex flex-col items-center gap-3 rounded-xl border border-white/20 bg-background/30 p-10 text-center",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+							className: "flex h-12 w-12 items-center justify-center rounded-full bg-primary/20 text-primary",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(UserRound, { className: "size-6" })
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
+							className: "font-display text-lg font-semibold text-white",
+							children: "Todavía no hay asistentes registrados"
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+							className: "max-w-md text-sm text-white/85",
+							children: "Cuando las personas confirmen su asistencia desde la página pública, aparecerán aquí y podrás descargarlas en Excel."
+						})
+					]
+				})
+			})
+		]
+	});
+}
+function AttendanceRow({ record, position }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("li", {
+		"data-ocid": `admin.attendance_panel.item.${position}`,
+		className: "rounded-xl border border-white/15 bg-white/10 p-4",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex items-start gap-3",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+				className: "flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/25 font-mono text-xs font-semibold text-white",
+				children: position
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "min-w-0 flex-1",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "truncate font-display text-base font-semibold text-white",
+						children: record.fullName
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+						className: "mt-0.5 font-mono text-xs text-white/75",
+						children: ["V-", record.cedula]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("dl", {
+						className: "mt-3 grid gap-x-4 gap-y-1.5 text-sm sm:grid-cols-2",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex min-w-0 gap-1.5",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("dt", {
+									className: "shrink-0 text-white/60",
+									children: "Teléfono:"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("dd", {
+									className: "min-w-0 truncate text-white/90",
+									children: record.phone
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex min-w-0 gap-1.5",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("dt", {
+									className: "shrink-0 text-white/60",
+									children: "Email:"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("dd", {
+									className: "min-w-0 truncate text-white/90",
+									children: record.email
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex min-w-0 gap-1.5",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("dt", {
+									className: "shrink-0 text-white/60",
+									children: "Municipio:"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("dd", {
+									className: "min-w-0 truncate text-white/90",
+									children: record.municipio
+								})]
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex min-w-0 gap-1.5",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("dt", {
+									className: "shrink-0 text-white/60",
+									children: "Parroquia:"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("dd", {
+									className: "min-w-0 truncate text-white/90",
+									children: record.parroquia
+								})]
+							})
+						]
+					}),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+						className: "mt-3 text-xs text-white/60",
+						children: ["Registrado el ", formatRegisteredAt(record.registeredAt)]
+					})
+				]
+			})]
+		})
+	});
+}
+//#endregion
+//#region src/components/InternetIdentity.tsx
+function SignInButton({ className }) {
+	const { identity, login, clear, isInitializing, isLoggingIn, isLoginError } = useInternetIdentity();
+	const queryClient = useQueryClient();
+	const authenticated = !!identity && !identity.getPrincipal().isAnonymous();
+	let label = authenticated ? "Sign out" : "Sign in with Internet Identity";
+	if (isInitializing) label = "Loading sign-in…";
+	else if (isLoggingIn) label = "Signing in…";
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+		type: "button",
+		"data-ocid": "auth.button",
+		className,
+		disabled: isInitializing || isLoggingIn,
+		onClick: () => {
+			if (authenticated) {
+				queryClient.cancelQueries();
+				queryClient.clear();
+				clear();
+			} else login();
+		},
+		children: label
+	}), isLoginError && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+		role: "alert",
+		"data-ocid": "auth.error_state",
+		children: "Sign-in did not complete. Please try again."
+	})] });
+}
+/** Each signed-in principal gets its own mounted cache boundary. */
+function PrivateQueryBoundary({ children }) {
+	const [queries] = (0, import_react.useState)(() => new QueryClient());
+	(0, import_react.useEffect)(() => () => {
+		queries.cancelQueries();
+		queries.clear();
+	}, [queries]);
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QueryClientProvider, {
+		client: queries,
+		children
+	});
+}
+/** Mount private queries only after sign-in, and isolate their cache when the principal changes. */
+function RequireSignIn({ children, fallback }) {
+	const { identity, isInitializing, isLoggingIn } = useInternetIdentity();
+	const principal = identity && !identity.getPrincipal().isAnonymous() ? identity.getPrincipal().toText() : void 0;
+	if (isInitializing || isLoggingIn) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("output", {
+		"data-ocid": "auth.loading_state",
+		children: "Loading your session…"
+	});
+	if (principal === void 0) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_jsx_runtime.Fragment, { children: fallback ?? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SignInButton, {}) });
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PrivateQueryBoundary, { children }, principal);
+}
+/**
+* Reusable protected access for administrator-only sections.
+* While the role is verified it shows a loading state, an unauthenticated
+* visitor is asked to sign in, and a signed-in non-administrator sees a
+* restricted-access notice. Only administrators reach `children`.
+*/
+function AdminGate({ children, loadingLabel = "Verificando tus permisos…", deniedTitle = "Acceso restringido", deniedDescription = "Esta sección es solo para administradores de la asamblea. Inicia sesión con una cuenta autorizada para continuar." }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RequireSignIn, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AdminRoleGate, {
+		loadingLabel,
+		deniedTitle,
+		deniedDescription,
+		children
+	}) });
+}
+function AdminRoleGate({ children, loadingLabel, deniedTitle, deniedDescription }) {
+	const { data: isAdmin, isLoading } = useIsCallerAdmin();
+	if (isLoading) return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("output", {
+		"data-ocid": "admin.loading_state",
+		className: "mx-auto flex w-full max-w-6xl items-center gap-2 px-4 py-24 text-white/85 md:px-8",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "size-5 animate-spin motion-reduce:animate-none" }), loadingLabel]
+	});
+	if (!isAdmin) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("section", {
+		"data-ocid": "admin.access_denied",
+		className: "mx-auto w-full max-w-3xl px-4 py-24 md:px-8",
+		children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+			className: "flex flex-col items-center gap-4 rounded-2xl border border-white/20 bg-card/60 p-10 text-center shadow-elevated backdrop-blur-md",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "flex h-14 w-14 items-center justify-center rounded-full bg-destructive/25 text-white",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ShieldAlert, { className: "size-7" })
 				}),
-				status.kind === "loading" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-					"data-ocid": "registro.export_loading_state",
-					className: "mt-4 flex items-center gap-2 text-sm font-medium text-white/85",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "size-4 animate-spin" }), "Preparando la tabla de Excel…"]
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+					className: "font-display text-2xl font-bold tracking-tight text-white md:text-3xl",
+					children: deniedTitle
 				}),
-				status.kind === "success" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("output", {
-					"data-ocid": "registro.export_success_state",
-					className: "mt-4 flex items-center gap-2 rounded-lg bg-success px-4 py-3 text-sm font-semibold text-success-foreground shadow-subtle",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "size-5" }), status.count === 1 ? "Se descargó 1 registro en el archivo de Excel." : `Se descargaron ${status.count} registros en el archivo de Excel.`]
-				}),
-				status.kind === "empty" && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					"data-ocid": "registro.export_empty_state",
-					className: "mt-4 rounded-lg border border-white/30 bg-white/10 px-4 py-3 text-sm font-medium text-white",
-					children: "Todavía no hay registros guardados. Cuando alguien se registre podrás descargar la tabla de Excel."
-				}),
-				status.kind === "error" && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-					role: "alert",
-					"data-ocid": "registro.export_error_state",
-					className: "mt-4 flex items-center gap-2 rounded-lg border border-white/30 bg-destructive/30 px-4 py-3 text-sm font-medium text-white",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleAlert, { className: "size-5" }), "No pudimos preparar la descarga. Verifica tu conexión e inténtalo de nuevo."]
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "max-w-md text-white/85",
+					children: deniedDescription
 				})
 			]
-		}), records.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AttendanceList, {
-			records,
-			title: "Registros descargados"
-		})]
+		})
+	});
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_jsx_runtime.Fragment, { children });
+}
+//#endregion
+//#region src/pages/Admin.tsx
+/**
+* Administration section.
+* The route and the reusable protected access live here; the body lists the
+* attendance registrations for the administrator and offers the Excel export.
+*/
+function Admin() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AdminGate, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AdminPanel, {}) });
+}
+function AdminPanel() {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("section", {
+		id: "administracion",
+		"data-ocid": "admin.page",
+		className: "mx-auto w-full max-w-6xl px-4 py-16 md:px-8 md:py-24",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+			className: "max-w-3xl",
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+					className: "text-xs font-semibold uppercase tracking-widest text-white/70",
+					children: "Administración"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
+					className: "mt-3 font-display text-3xl font-bold tracking-tight text-white md:text-5xl",
+					children: "Panel de administración"
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+					className: "mt-4 text-base text-white/85 md:text-lg",
+					children: "Consulta los registros de asistencia guardados en el sistema y descárgalos en Excel."
+				})
+			]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AttendanceAdminPanel, {})]
+	});
+}
+//#endregion
+//#region ../../../../../../opt/pnpm-templates/build_template/node_modules/.pnpm/@radix-ui+react-compose-refs@1.1.2_@types+react@19.1.17_react@19.1.5/node_modules/@radix-ui/react-compose-refs/dist/index.mjs
+function setRef(ref, value) {
+	if (typeof ref === "function") return ref(value);
+	else if (ref !== null && ref !== void 0) ref.current = value;
+}
+function composeRefs(...refs) {
+	return (node) => {
+		let hasCleanup = false;
+		const cleanups = refs.map((ref) => {
+			const cleanup = setRef(ref, node);
+			if (!hasCleanup && typeof cleanup == "function") hasCleanup = true;
+			return cleanup;
+		});
+		if (hasCleanup) return () => {
+			for (let i = 0; i < cleanups.length; i++) {
+				const cleanup = cleanups[i];
+				if (typeof cleanup == "function") cleanup();
+				else setRef(refs[i], null);
+			}
+		};
+	};
+}
+//#endregion
+//#region ../../../../../../opt/pnpm-templates/build_template/node_modules/.pnpm/@radix-ui+react-slot@1.2.4_@types+react@19.1.17_react@19.1.5/node_modules/@radix-ui/react-slot/dist/index.mjs
+var REACT_LAZY_TYPE = Symbol.for("react.lazy");
+var use = import_react[" use ".trim().toString()];
+function isPromiseLike(value) {
+	return typeof value === "object" && value !== null && "then" in value;
+}
+function isLazyComponent(element) {
+	return element != null && typeof element === "object" && "$$typeof" in element && element.$$typeof === REACT_LAZY_TYPE && "_payload" in element && isPromiseLike(element._payload);
+}
+// @__NO_SIDE_EFFECTS__
+function createSlot(ownerName) {
+	const SlotClone = /* @__PURE__ */ createSlotClone(ownerName);
+	const Slot2 = import_react.forwardRef((props, forwardedRef) => {
+		let { children, ...slotProps } = props;
+		if (isLazyComponent(children) && typeof use === "function") children = use(children._payload);
+		const childrenArray = import_react.Children.toArray(children);
+		const slottable = childrenArray.find(isSlottable);
+		if (slottable) {
+			const newElement = slottable.props.children;
+			const newChildren = childrenArray.map((child) => {
+				if (child === slottable) {
+					if (import_react.Children.count(newElement) > 1) return import_react.Children.only(null);
+					return import_react.isValidElement(newElement) ? newElement.props.children : null;
+				} else return child;
+			});
+			return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SlotClone, {
+				...slotProps,
+				ref: forwardedRef,
+				children: import_react.isValidElement(newElement) ? import_react.cloneElement(newElement, void 0, newChildren) : null
+			});
+		}
+		return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SlotClone, {
+			...slotProps,
+			ref: forwardedRef,
+			children
+		});
+	});
+	Slot2.displayName = `${ownerName}.Slot`;
+	return Slot2;
+}
+var Slot = /* @__PURE__ */ createSlot("Slot");
+// @__NO_SIDE_EFFECTS__
+function createSlotClone(ownerName) {
+	const SlotClone = import_react.forwardRef((props, forwardedRef) => {
+		let { children, ...slotProps } = props;
+		if (isLazyComponent(children) && typeof use === "function") children = use(children._payload);
+		if (import_react.isValidElement(children)) {
+			const childrenRef = getElementRef(children);
+			const props2 = mergeProps(slotProps, children.props);
+			if (children.type !== import_react.Fragment) props2.ref = forwardedRef ? composeRefs(forwardedRef, childrenRef) : childrenRef;
+			return import_react.cloneElement(children, props2);
+		}
+		return import_react.Children.count(children) > 1 ? import_react.Children.only(null) : null;
+	});
+	SlotClone.displayName = `${ownerName}.SlotClone`;
+	return SlotClone;
+}
+var SLOTTABLE_IDENTIFIER = Symbol("radix.slottable");
+function isSlottable(child) {
+	return import_react.isValidElement(child) && typeof child.type === "function" && "__radixId" in child.type && child.type.__radixId === SLOTTABLE_IDENTIFIER;
+}
+function mergeProps(slotProps, childProps) {
+	const overrideProps = { ...childProps };
+	for (const propName in childProps) {
+		const slotPropValue = slotProps[propName];
+		const childPropValue = childProps[propName];
+		if (/^on[A-Z]/.test(propName)) {
+			if (slotPropValue && childPropValue) overrideProps[propName] = (...args) => {
+				const result = childPropValue(...args);
+				slotPropValue(...args);
+				return result;
+			};
+			else if (slotPropValue) overrideProps[propName] = slotPropValue;
+		} else if (propName === "style") overrideProps[propName] = {
+			...slotPropValue,
+			...childPropValue
+		};
+		else if (propName === "className") overrideProps[propName] = [slotPropValue, childPropValue].filter(Boolean).join(" ");
+	}
+	return {
+		...slotProps,
+		...overrideProps
+	};
+}
+function getElementRef(element) {
+	let getter = Object.getOwnPropertyDescriptor(element.props, "ref")?.get;
+	let mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
+	if (mayWarn) return element.ref;
+	getter = Object.getOwnPropertyDescriptor(element, "ref")?.get;
+	mayWarn = getter && "isReactWarning" in getter && getter.isReactWarning;
+	if (mayWarn) return element.props.ref;
+	return element.props.ref || element.ref;
+}
+//#endregion
+//#region ../../../../../../opt/pnpm-templates/build_template/node_modules/.pnpm/class-variance-authority@0.7.1/node_modules/class-variance-authority/dist/index.mjs
+/**
+* Copyright 2022 Joe Bell. All rights reserved.
+*
+* This file is licensed to you under the Apache License, Version 2.0
+* (the "License"); you may not use this file except in compliance with the
+* License. You may obtain a copy of the License at
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+* WARRANTIES OR REPRESENTATIONS OF ANY KIND, either express or implied. See the
+* License for the specific language governing permissions and limitations under
+* the License.
+*/ var falsyToString = (value) => typeof value === "boolean" ? `${value}` : value === 0 ? "0" : value;
+var cx = clsx;
+var cva = (base, config) => (props) => {
+	var _config_compoundVariants;
+	if ((config === null || config === void 0 ? void 0 : config.variants) == null) return cx(base, props === null || props === void 0 ? void 0 : props.class, props === null || props === void 0 ? void 0 : props.className);
+	const { variants, defaultVariants } = config;
+	const getVariantClassNames = Object.keys(variants).map((variant) => {
+		const variantProp = props === null || props === void 0 ? void 0 : props[variant];
+		const defaultVariantProp = defaultVariants === null || defaultVariants === void 0 ? void 0 : defaultVariants[variant];
+		if (variantProp === null) return null;
+		const variantKey = falsyToString(variantProp) || falsyToString(defaultVariantProp);
+		return variants[variant][variantKey];
+	});
+	const propsWithoutUndefined = props && Object.entries(props).reduce((acc, param) => {
+		let [key, value] = param;
+		if (value === void 0) return acc;
+		acc[key] = value;
+		return acc;
+	}, {});
+	return cx(base, getVariantClassNames, config === null || config === void 0 ? void 0 : (_config_compoundVariants = config.compoundVariants) === null || _config_compoundVariants === void 0 ? void 0 : _config_compoundVariants.reduce((acc, param) => {
+		let { class: cvClass, className: cvClassName, ...compoundVariantOptions } = param;
+		return Object.entries(compoundVariantOptions).every((param) => {
+			let [key, value] = param;
+			return Array.isArray(value) ? value.includes({
+				...defaultVariants,
+				...propsWithoutUndefined
+			}[key]) : {
+				...defaultVariants,
+				...propsWithoutUndefined
+			}[key] === value;
+		}) ? [
+			...acc,
+			cvClass,
+			cvClassName
+		] : acc;
+	}, []), props === null || props === void 0 ? void 0 : props.class, props === null || props === void 0 ? void 0 : props.className);
+};
+//#endregion
+//#region src/components/ui/button.tsx
+var buttonVariants = cva("inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive", {
+	variants: {
+		variant: {
+			default: "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
+			destructive: "bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+			outline: "border bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
+			secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
+			ghost: "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+			link: "text-primary underline-offset-4 hover:underline"
+		},
+		size: {
+			default: "h-9 px-4 py-2 has-[>svg]:px-3",
+			sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
+			lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
+			icon: "size-9"
+		}
+	},
+	defaultVariants: {
+		variant: "default",
+		size: "default"
+	}
+});
+function Button({ className, variant, size, asChild = false, ...props }) {
+	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(asChild ? Slot : "button", {
+		"data-slot": "button",
+		className: cn(buttonVariants({
+			variant,
+			size,
+			className
+		})),
+		...props
 	});
 }
 //#endregion
@@ -58985,7 +59290,6 @@ var EVENT_FACTS = [
 	}
 ];
 function Home() {
-	const { data: attendance, isLoading: attendanceLoading } = useAttendanceList();
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 		id: "inicio",
 		children: [
@@ -59120,7 +59424,7 @@ function Home() {
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 								className: "text-base text-white/85 md:text-lg",
-								children: "Completa el formulario y guarda tu registro. Al finalizar podrás descargar la lista completa de asistentes en formato Excel."
+								children: "Completa el formulario y guarda tu registro. Tu confirmación nos ayuda a preparar la asamblea para todos los productores."
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 								className: "overflow-hidden rounded-2xl border border-white/25 shadow-glow",
@@ -59134,76 +59438,14 @@ function Home() {
 								})
 							})
 						]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 						className: "space-y-6",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RegistrationForm, {}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(AttendanceExport, {}),
-							attendanceLoading ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								"data-ocid": "registro.attendance_list.loading_state",
-								className: "rounded-2xl border border-white/20 bg-card/60 p-6 shadow-elevated backdrop-blur-md md:p-8",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "h-6 w-48 animate-pulse rounded bg-white/20 motion-reduce:animate-none" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-									className: "mt-5 grid gap-2 sm:grid-cols-2",
-									children: Array.from({ length: 4 }, (_, i) => `skeleton-${i}`).map((id) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "h-12 animate-pulse rounded-xl bg-white/10 motion-reduce:animate-none" }, id))
-								})]
-							}) : attendance && attendance.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(AttendanceList, { records: attendance }) : null
-						]
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(RegistrationForm, {})
 					})]
 				})
 			})
 		]
 	});
-}
-//#endregion
-//#region src/components/InternetIdentity.tsx
-function SignInButton({ className }) {
-	const { identity, login, clear, isInitializing, isLoggingIn, isLoginError } = useInternetIdentity();
-	const queryClient = useQueryClient();
-	const authenticated = !!identity && !identity.getPrincipal().isAnonymous();
-	let label = authenticated ? "Sign out" : "Sign in with Internet Identity";
-	if (isInitializing) label = "Loading sign-in…";
-	else if (isLoggingIn) label = "Signing in…";
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-		type: "button",
-		"data-ocid": "auth.button",
-		className,
-		disabled: isInitializing || isLoggingIn,
-		onClick: () => {
-			if (authenticated) {
-				queryClient.cancelQueries();
-				queryClient.clear();
-				clear();
-			} else login();
-		},
-		children: label
-	}), isLoginError && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-		role: "alert",
-		"data-ocid": "auth.error_state",
-		children: "Sign-in did not complete. Please try again."
-	})] });
-}
-/** Each signed-in principal gets its own mounted cache boundary. */
-function PrivateQueryBoundary({ children }) {
-	const [queries] = (0, import_react.useState)(() => new QueryClient());
-	(0, import_react.useEffect)(() => () => {
-		queries.cancelQueries();
-		queries.clear();
-	}, [queries]);
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(QueryClientProvider, {
-		client: queries,
-		children
-	});
-}
-/** Mount private queries only after sign-in, and isolate their cache when the principal changes. */
-function RequireSignIn({ children, fallback }) {
-	const { identity, isInitializing, isLoggingIn } = useInternetIdentity();
-	const principal = identity && !identity.getPrincipal().isAnonymous() ? identity.getPrincipal().toText() : void 0;
-	if (isInitializing || isLoggingIn) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("output", {
-		"data-ocid": "auth.loading_state",
-		children: "Loading your session…"
-	});
-	if (principal === void 0) return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_jsx_runtime.Fragment, { children: fallback ?? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SignInButton, {}) });
-	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PrivateQueryBoundary, { children }, principal);
 }
 //#endregion
 //#region src/types/reminder.ts
@@ -59506,13 +59748,22 @@ var indexRoute = createRoute({
 	path: "/",
 	component: Home
 });
+var adminRoute = createRoute({
+	getParentRoute: () => rootRoute,
+	path: "/administracion",
+	component: Admin
+});
 var reminderRoute = createRoute({
 	getParentRoute: () => rootRoute,
 	path: "/recordatorio",
 	component: Reminder
 });
 var router = createRouter({
-	routeTree: rootRoute.addChildren([indexRoute, reminderRoute]),
+	routeTree: rootRoute.addChildren([
+		indexRoute,
+		adminRoute,
+		reminderRoute
+	]),
 	defaultPreload: "intent",
 	scrollRestoration: true
 });

@@ -1,6 +1,14 @@
 {
   "version": 1,
   "flows": {
+    "admin-sees-attendees": {
+      "flowId": "admin-sees-attendees",
+      "specDigest": "b1063b9fda9d7ef866463bbc74eda5fc3f6bb2c92f923b6a7aeca59a8406c8b8",
+      "status": "record-failed",
+      "recordedAt": "2026-11-18T12:34:23.476Z",
+      "recordedBy": "deepseek-v4.1-flash",
+      "entries": []
+    },
     "descarga-excel": {
       "flowId": "descarga-excel",
       "specDigest": "5b1be161461cadd204cd8fe8876abc2c0c13d50928e9907971730fb8ce724a38",
@@ -15,12 +23,7 @@
       ],
       "ranWith": [
         "registro-asistencia"
-      ],
-      "passedTree": "6b50ad1d91f1626071c6988d5a9add2bcd0e6a7a",
-      "visitedPaths": [
-        "/"
-      ],
-      "readOnly": true
+      ]
     },
     "event-date-visible": {
       "flowId": "event-date-visible",
@@ -33,7 +36,6 @@
         0
       ],
       "ranAfter": [
-        "descarga-excel",
         "registro-asistencia",
         "validacion-campos"
       ],
@@ -42,7 +44,7 @@
         "registro-asistencia",
         "validacion-campos"
       ],
-      "passedTree": "6b50ad1d91f1626071c6988d5a9add2bcd0e6a7a",
+      "passedTree": "938436ed1b924ff8f462740cbccd196a20f1754f",
       "visitedPaths": [
         "/"
       ],
@@ -59,7 +61,6 @@
         0
       ],
       "ranAfter": [
-        "descarga-excel",
         "event-date-visible",
         "registro-asistencia",
         "validacion-campos"
@@ -70,11 +71,21 @@
         "registro-asistencia",
         "validacion-campos"
       ],
-      "passedTree": "6b50ad1d91f1626071c6988d5a9add2bcd0e6a7a",
+      "passedTree": "938436ed1b924ff8f462740cbccd196a20f1754f",
       "visitedPaths": [
         "/"
       ],
       "readOnly": true
+    },
+    "public-registration-and-hidden-data": {
+      "flowId": "public-registration-and-hidden-data",
+      "specDigest": "769d7e9e889fa58344b3c49556023a7ed4da8775d96d32bab690d2aedf62f737",
+      "status": "record-failed",
+      "recordedAt": "2026-11-18T12:34:23.475Z",
+      "recordedBy": "deepseek-v4.1-flash",
+      "entries": [
+        "66bc62ecce64bdaaa05383677e09f858884b297644fe5b93cabd029bf8ec01e2.json"
+      ]
     },
     "registro-asistencia": {
       "flowId": "registro-asistencia",
@@ -91,7 +102,7 @@
       ],
       "ranAfter": [],
       "ranWith": [],
-      "passedTree": "6b50ad1d91f1626071c6988d5a9add2bcd0e6a7a",
+      "passedTree": "938436ed1b924ff8f462740cbccd196a20f1754f",
       "visitedPaths": [
         "/"
       ]
@@ -123,14 +134,13 @@
         0
       ],
       "ranAfter": [
-        "descarga-excel",
         "registro-asistencia"
       ],
       "ranWith": [
         "descarga-excel",
         "registro-asistencia"
       ],
-      "passedTree": "6b50ad1d91f1626071c6988d5a9add2bcd0e6a7a",
+      "passedTree": "938436ed1b924ff8f462740cbccd196a20f1754f",
       "visitedPaths": [
         "/"
       ],

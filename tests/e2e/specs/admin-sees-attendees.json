@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "spec": {
+    "id": "admin-sees-attendees",
+    "kind": "interactive",
+    "goal": "El administrador ve la lista completa de asistentes y puede descargarla en Excel",
+    "requirementIndexes": [
+      2,
+      3,
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "acceptanceCriteriaIndexes": [
+      2,
+      3,
+      4,
+      7
+    ],
+    "steps": [
+      "Sign in",
+      "Open the administration page",
+      "Press Descargar Excel"
+    ],
+    "checks": [
+      {
+        "afterStep": 0,
+        "expectText": "Registra tu participación"
+      },
+      {
+        "afterStep": 1,
+        "expectText": "Ana Perez"
+      },
+      {
+        "afterStep": 1,
+        "expectText": "Descargar Excel"
+      },
+      {
+        "afterStep": 2,
+        "expectText": "Excel"
+      }
+    ]
+  }
+}

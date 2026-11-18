@@ -1,9 +1,11 @@
+import { useIsCallerAdmin } from "@/hooks/useQueries";
 import { useInternetIdentity } from "@caffeineai/core-infrastructure";
 import {
   QueryClient,
   QueryClientProvider,
   useQueryClient,
 } from "@tanstack/react-query";
+import { Loader2, ShieldAlert } from "lucide-react";
 import { type ReactNode, useEffect, useState } from "react";
 
 export function SignInButton({ className }: { className?: string }) {
@@ -126,4 +128,81 @@ export function AuthenticatedApp({
       {children}
     </RequireSignIn>
   );
+}
+
+/**
+ * Reusable protected access for administrator-only sections.
+ * While the role is verified it shows a loading state, an unauthenticated
+ * visitor is asked to sign in, and a signed-in non-administrator sees a
+ * restricted-access notice. Only administrators reach `children`.
+ */
+export function AdminGate({
+  children,
+  loadingLabel = "Verificando tus permisos…",
+  deniedTitle = "Acceso restringido",
+  deniedDescription = "Esta sección es solo para administradores de la asamblea. Inicia sesión con una cuenta autorizada para continuar.",
+}: {
+  children: ReactNode;
+  loadingLabel?: string;
+  deniedTitle?: string;
+  deniedDescription?: string;
+}) {
+  return (
+    <RequireSignIn>
+      <AdminRoleGate
+        loadingLabel={loadingLabel}
+        deniedTitle={deniedTitle}
+        deniedDescription={deniedDescription}
+      >
+        {children}
+      </AdminRoleGate>
+    </RequireSignIn>
+  );
+}
+
+function AdminRoleGate({
+  children,
+  loadingLabel,
+  deniedTitle,
+  deniedDescription,
+}: {
+  children: ReactNode;
+  loadingLabel: string;
+  deniedTitle: string;
+  deniedDescription: string;
+}) {
+  const { data: isAdmin, isLoading } = useIsCallerAdmin();
+
+  if (isLoading) {
+    return (
+      <output
+        data-ocid="admin.loading_state"
+        className="mx-auto flex w-full max-w-6xl items-center gap-2 px-4 py-24 text-white/85 md:px-8"
+      >
+        <Loader2 className="size-5 animate-spin motion-reduce:animate-none" />
+        {loadingLabel}
+      </output>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <section
+        data-ocid="admin.access_denied"
+        className="mx-auto w-full max-w-3xl px-4 py-24 md:px-8"
+      >
+        <div className="flex flex-col items-center gap-4 rounded-2xl border border-white/20 bg-card/60 p-10 text-center shadow-elevated backdrop-blur-md">
+          <span className="flex h-14 w-14 items-center justify-center rounded-full bg-destructive/25 text-white">
+            <ShieldAlert className="size-7" />
+          </span>
+          <h1 className="font-display text-2xl font-bold tracking-tight text-white md:text-3xl">
+            {deniedTitle}
+          </h1>
+          <p className="max-w-md text-white/85">{deniedDescription}</p>
+        </div>
+      </section>
+    );
+  }
+
+  return <>{children}</>;
 }
